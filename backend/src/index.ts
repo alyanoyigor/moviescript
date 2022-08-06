@@ -1,6 +1,9 @@
+import 'reflect-metadata';
+
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+
 import router from './routes';
 
 const { PORT, MONGO_URI } = process.env;

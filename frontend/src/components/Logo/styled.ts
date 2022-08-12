@@ -9,7 +9,7 @@ export const StyledLogoContainer = styled(Link)`
   font-size: 20px;
   line-height: 80%;
   font-weight: 800;
-  color: #ffffff;
+  color: ${(props) => props.theme.palette.common.white};
   text-decoration: none;
 
   &.active {
@@ -20,6 +20,6 @@ export const StyledLogoContainer = styled(Link)`
 export const StyledSelectedText = styled.span`
   padding: 2px;
   background-color: ${(props) => props.theme.palette.primary.main};
-  color: #ffffff;
+  color: ${(props) => props.theme.palette.common.white};
   border-radius: 2px;
 `;

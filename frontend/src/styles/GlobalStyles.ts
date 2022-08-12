@@ -9,5 +9,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
+    background-color: #0a0a0a;
+    color: #fafafa;
   }
 `;

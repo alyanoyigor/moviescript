@@ -18,7 +18,7 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
       width: '0.3rem',
     },
     '&::-webkit-scrollbar-track': {
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: theme.palette.grey[600],

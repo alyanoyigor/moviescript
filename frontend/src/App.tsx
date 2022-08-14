@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { MovieList } from './pages/MovieList';
+import { MovieDetails } from './pages/MovieDetails';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="movies">
           <Route index element={<MovieList />} />
-          {/* <Route path=":id" element={<MovieDetails />} /> */}
+          <Route path=":id" element={<MovieDetails />} />
         </Route>
       </Route>
     </Routes>

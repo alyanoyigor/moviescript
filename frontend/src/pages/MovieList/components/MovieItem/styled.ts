@@ -1,10 +1,12 @@
 import { CardContent, Card, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const StyledCardContainer = styled.div`
+export const StyledCardContainer = styled(Link)`
   width: 100%;
   margin: 0;
   margin-bottom: 8px;
+  text-decoration: none;
 
   ${(props) => props.theme.breakpoints.up('sm')} {
     width: 50%;

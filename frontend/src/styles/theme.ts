@@ -1,5 +1,20 @@
 import { createTheme } from '@mui/material';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    light: Palette['primary'];
+  }
+  interface PaletteOptions {
+    light: PaletteOptions['primary'];
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    light: true;
+  }
+}
+
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -16,9 +31,10 @@ const theme = createTheme({
     info: {
       main: '#4026e0',
     },
-    // light: {
-    //   main: '#fafafa',
-    // },
+    light: {
+      main: '#fafafa',
+      contrastText: '#0a0a0a',
+    },
   },
 });
 

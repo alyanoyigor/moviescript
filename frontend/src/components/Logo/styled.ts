@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const StyledLogoContainer = styled(Link)`
+export const StyledLogoContainer = styled(NavLink)`
   display: inline-flex;
   text-transform: uppercase;
   flex-direction: column;

@@ -2,7 +2,7 @@ import { InputBase, styled, alpha } from '@mui/material';
 
 export const StyledSearchContainer = styled('div')(({ theme }) => ({
   position: 'relative',
-  flex: 'auto',
+  width: '100%',
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   marginLeft: 0,
   borderRadius: theme.shape.borderRadius,
@@ -39,11 +39,5 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
     '&:focus': {
       border: `solid 1px ${alpha(theme.palette.common.white, 0.5)}`,
     },
-    // [theme.breakpoints.up('sm')]: {
-    //   width: '12ch',
-    //   '&:focus': {
-    //     width: '20ch',
-    //   },
-    // },
   },
 }));

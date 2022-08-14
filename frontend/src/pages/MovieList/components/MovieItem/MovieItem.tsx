@@ -10,7 +10,7 @@ import {
 
 export const MovieItem = () => {
   return (
-    <StyledCardContainer>
+    <StyledCardContainer to="/movies/1">
       <StyledCard>
         <StyledCardContent>
           <Box width="100%" display="flex" justifyContent="center">
@@ -19,7 +19,13 @@ export const MovieItem = () => {
           </Box>
         </StyledCardContent>
         <Box position="absolute" top={16} right={16} zIndex={1}>
-          <IconButton>
+          <IconButton
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('click');
+            }}
+          >
             <BalanceIcon />
           </IconButton>
         </Box>

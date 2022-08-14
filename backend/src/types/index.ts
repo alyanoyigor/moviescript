@@ -1,19 +1,20 @@
 import { Types } from 'mongoose';
 
 type ID = {
-  _id: typeof Types.ObjectId;
+  _id: Types.ObjectId;
 };
 
 export type TCategory = {
-  id: number;
   name: string;
-};
+} & ID;
 
 export type TMovie = {
   title: string;
-  overview: string;
-  originalLanguage: string;
+  description: string;
   categories: TCategory[];
   releaseDate: Date;
   imagePath: string;
+  duration: number;
+  grade: number;
+  deleted?: boolean;
 } & ID;

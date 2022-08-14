@@ -2,21 +2,19 @@ import { Schema } from 'mongoose';
 import { Service } from 'typedi';
 
 import modelMixin from '../mixins/model.mixin';
-import { TCategory, TMovie } from '../types/movie';
-
-const categorySchema = new Schema<TCategory>({
-  id: { type: Number, required: true },
-  name: { type: String, required: true },
-});
+import { TMovie } from '../types';
+import { categorySchema } from './category.model';
 
 const movieSchema = new Schema<TMovie>(
   {
     title: { type: String, required: true },
-    overview: { type: String },
+    description: { type: String, required: true },
     categories: { type: [categorySchema], default: [] },
-    originalLanguage: { type: String, required: true },
     releaseDate: { type: Date, default: new Date() },
-    imagePath: { type: String },
+    duration: { type: Number, required: true },
+    grade: { type: Number, required: true },
+    imagePath: { type: String, required: true },
+    deleted: { type: Boolean },
   },
   { timestamps: true }
 );
@@ -34,11 +32,25 @@ class MovieModel extends modelMixin<TMovie>('Movie', movieSchema) {
   }
 
   async findById(id: string) {
-    return super.findById(id);
+    return await super.findById(id);
   }
 
   async getMovieList() {
     return await this.Model.find();
+  }
+
+  async getMovie(id: string) {
+    return await this.Model.findById(id);
+  }
+
+  async deleteMovie(id: string) {
+    const movie = await this.findById(id);
+    const deletedMovie = new this.Model(movie);
+
+    deletedMovie.set({ delete: true });
+    await deletedMovie.save();
+
+    return 'Successfully deleted';
   }
 
   async updateMovie(data: Partial<TMovie>, param: Partial<TMovie>) {

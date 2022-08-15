@@ -18,3 +18,15 @@ export type TMovie = {
   grade: number;
   deleted?: boolean;
 } & ID;
+
+enum SortOptions {
+  asc = 'asc',
+  desc = 'desc',
+}
+
+export type TMoviesQuery = {
+  search?: string;
+  categories?: string;
+  limit?: string;
+  sort?: SortOptions;
+};

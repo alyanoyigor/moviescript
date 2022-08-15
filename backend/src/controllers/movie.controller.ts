@@ -11,9 +11,9 @@ class MovieController extends BaseController {
     super();
   }
 
-  async getMovieList(_request: Request, response: Response) {
+  async getMovieList(request: Request, response: Response) {
     try {
-      const movieList = await this.movieService.getMovieList();
+      const movieList = await this.movieService.getMovieList(request.query);
       return this.formateSuccessResponse(response, movieList);
     } catch (error) {
       return this.formatErrorResponse(response, error);

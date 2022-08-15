@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 import { Service } from 'typedi';
 
 import modelMixin from '../mixins/model.mixin';
-import { TMovie } from '../types';
+import { TMovie, TMoviesQuery } from '../types';
 import { categorySchema } from './category.model';
 
 const movieSchema = new Schema<TMovie>(
@@ -21,6 +21,10 @@ const movieSchema = new Schema<TMovie>(
 
 @Service()
 class MovieModel extends modelMixin<TMovie>('Movie', movieSchema) {
+  get model() {
+    return this.Model;
+  }
+
   async createMovie(data: TMovie) {
     const movie = new this.Model(data);
     await movie.save();
@@ -33,10 +37,6 @@ class MovieModel extends modelMixin<TMovie>('Movie', movieSchema) {
 
   async findById(id: string) {
     return await super.findById(id);
-  }
-
-  async getMovieList() {
-    return await this.Model.find();
   }
 
   async getMovie(id: string) {

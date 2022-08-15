@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import MovieModel from '../models/movie.model';
-import { TMovie } from '../types';
+import { TMovie, TMoviesQuery } from '../types';
 
 @Service()
 class MovieService {
@@ -10,13 +10,26 @@ class MovieService {
     return await this.movieModel.createMovie(data);
   }
 
-  async getMovieList() {
-    const movieList = await this.movieModel.getMovieList();
-    const existingMovies = movieList.filter(
-      (movie) => Boolean(movie.delete) === false
-    );
+  async getMovieList(query: TMoviesQuery) {
+    const limit = Number(query.limit) || 8;
+    const movies = this.movieModel.model
+      .find({ deleted: { $ne: true } })
+      .limit(limit);
 
-    return existingMovies;
+    if (query.search) {
+      movies.find({ title: { $regex: query.search, $options: 'i' } });
+    }
+
+    if (query.categories) {
+      const categories = query.categories.split(',');
+      movies.find({ 'categories.name': { $in: categories } });
+    }
+
+    if (query.sort) {
+      movies.sort({ title: query.sort });
+    }
+
+    return await movies;
   }
 
   async getMovie(id: string) {

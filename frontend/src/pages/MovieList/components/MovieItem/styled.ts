@@ -68,7 +68,7 @@ export const StyledCardContainer = styled(Link)`
 
 export const StyledCard = styled(Card)`
   height: 400px;
-  background-image: url('https://static.posters.cz/image/750webp/50036.webp') !important;
+  background-image:  url(${(props: { image: string }) => props.image}) !important;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;

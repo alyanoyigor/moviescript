@@ -1,30 +1,42 @@
+import React, { useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
-import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import { Preloader } from '../../components/Preloader';
+import { useAppDispatch } from '../../store';
+
+import { movieListFetchSelector } from './selectors/movieList';
 import { MovieItem } from './components/MovieItem';
+import { movieListFetchStart } from './thunks/movieList';
 import { MovieListControls } from './components/MovieListControls';
 import { StyledListWrapper } from './styled';
 
 export const MovieList = () => {
-  const [count, setCount] = useState(6);
   const [paginateLoading, setPaginateLoading] = useState(false);
 
-  const handleShowMore = () => {
-    setPaginateLoading(true);
-    setTimeout(() => {
-      setCount((prevCount) => prevCount + 6);
-      setPaginateLoading(false);
-    }, 1500);
-  };
+  const { data, loading, error } = useSelector(movieListFetchSelector);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(movieListFetchStart());
+  }, [dispatch]);
 
   return (
     <>
       <MovieListControls />
-      <StyledListWrapper>
-        {Array.from(Array(count), (_, index) => (
-          <MovieItem key={index} />
-        ))}
-      </StyledListWrapper>
+      {data.length > 0 && (
+        <StyledListWrapper>
+          {data.map((movie) => (
+            <MovieItem
+              key={movie._id}
+              title={movie.title}
+              releaseDate={movie.releaseDate}
+              movieId={movie._id}
+              imagePath={movie.imagePath}
+            />
+          ))}
+        </StyledListWrapper>
+      )}
       <Box
         display="flex"
         justifyContent="center"
@@ -33,11 +45,7 @@ export const MovieList = () => {
       >
         {paginateLoading && <Preloader />}
         {!paginateLoading && (
-          <Button
-            sx={{ height: '42px' }}
-            variant="contained"
-            onClick={handleShowMore}
-          >
+          <Button sx={{ height: '42px' }} variant="contained">
             Show more
           </Button>
         )}

@@ -8,7 +8,7 @@ export type Movie = {
   title: string;
   description: string;
   categories: MovieCategory[];
-  releaseDate: Date;
+  releaseDate: string;
   imagePath: string;
   duration: number;
   grade: number;

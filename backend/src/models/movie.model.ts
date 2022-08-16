@@ -2,10 +2,10 @@ import { Schema } from 'mongoose';
 import { Service } from 'typedi';
 
 import modelMixin from '../mixins/model.mixin';
-import { TMovie, TMoviesQuery } from '../types';
+import { MovieUserInput, MovieInDatabase } from '../types';
 import { categorySchema } from './category.model';
 
-const movieSchema = new Schema<TMovie>(
+const movieSchema = new Schema<MovieInDatabase>(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -20,18 +20,18 @@ const movieSchema = new Schema<TMovie>(
 );
 
 @Service()
-class MovieModel extends modelMixin<TMovie>('Movie', movieSchema) {
+class MovieModel extends modelMixin<MovieInDatabase>('Movie', movieSchema) {
   get model() {
     return this.Model;
   }
 
-  async createMovie(data: TMovie) {
+  async createMovie(data: MovieUserInput) {
     const movie = new this.Model(data);
     await movie.save();
     return movie;
   }
 
-  async findMovieByParam(param: Partial<TMovie>) {
+  async findMovieByParam(param: Partial<MovieInDatabase>) {
     return await this.findByParam(param);
   }
 
@@ -53,8 +53,8 @@ class MovieModel extends modelMixin<TMovie>('Movie', movieSchema) {
     return 'Successfully deleted';
   }
 
-  async updateMovie(data: Partial<TMovie>, param: Partial<TMovie>) {
-    const movie = await this.findMovieByParam(param);
+  async updateMovie(data: Partial<MovieUserInput>, id: string) {
+    const movie = await this.findById(id);
     const updatedMovie = new this.Model(movie);
 
     updatedMovie.set(data);

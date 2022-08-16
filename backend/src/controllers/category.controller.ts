@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { Service } from 'typedi';
 
-import BaseController from './base.controller';
 import CategoryService from '../services/category.service';
+import { CategoryUserInputSchema } from '../validation';
+import BaseController from './base.controller';
 
 @Service()
 class CategoryController extends BaseController {
@@ -12,10 +13,11 @@ class CategoryController extends BaseController {
 
   async createCategory(request: Request, response: Response) {
     try {
-      const category = await this.categoryService.createCategory(request.body);
+      const validCategory = CategoryUserInputSchema.parse(request.body);
+      const category = await this.categoryService.createCategory(validCategory);
       return this.formateSuccessResponse(response, category);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
   async getCategories(request: Request, response: Response) {
@@ -23,7 +25,7 @@ class CategoryController extends BaseController {
       const categories = await this.categoryService.getCategories();
       return this.formateSuccessResponse(response, categories);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
 }

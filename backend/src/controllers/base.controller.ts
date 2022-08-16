@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { z as zod } from 'zod';
 import {
   formatErrorResponse,
   formatSuccessResponse,
@@ -11,6 +12,16 @@ class BaseController {
 
   formatErrorResponse<T>(response: Response, error: T) {
     return formatErrorResponse(response, error);
+  }
+
+  handleError<T>(response: Response, error: T) {
+    if (error instanceof zod.ZodError) {
+      return this.formatErrorResponse(response, error.flatten());
+    }
+
+    if (error instanceof Error) {
+      return this.formatErrorResponse(response, error.message);
+    }
   }
 }
 

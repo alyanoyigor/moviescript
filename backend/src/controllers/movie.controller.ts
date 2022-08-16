@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import { Service } from 'typedi';
 
-import BaseController from './base.controller';
 import MovieService from '../services/movie.service';
+import { MovieOptionalSchema, MovieUserInputSchema } from '../validation';
+import BaseController from './base.controller';
 
 @Service()
 class MovieController extends BaseController {
@@ -16,7 +16,7 @@ class MovieController extends BaseController {
       const movieList = await this.movieService.getMovieList(request.query);
       return this.formateSuccessResponse(response, movieList);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
 
@@ -25,26 +25,30 @@ class MovieController extends BaseController {
       const movie = await this.movieService.getMovie(request.params.id);
       return this.formateSuccessResponse(response, movie);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
 
   async createMovie(request: Request, response: Response) {
     try {
-      const movie = await this.movieService.createMovie(request.body);
+      const validMovie = MovieUserInputSchema.parse(request.body);
+      const movie = await this.movieService.createMovie(validMovie);
       return this.formateSuccessResponse(response, movie);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
 
   async updateMovie(request: Request, response: Response) {
     try {
-      const param = { _id: new mongoose.Types.ObjectId(request.params.id) };
-      const movie = await this.movieService.updateMovie(request.body, param);
+      const validMovie = MovieOptionalSchema.parse(request.body);
+      const movie = await this.movieService.updateMovie(
+        validMovie,
+        request.params.id
+      );
       return this.formateSuccessResponse(response, movie);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
 
@@ -55,7 +59,7 @@ class MovieController extends BaseController {
       );
       return this.formateSuccessResponse(response, deletedResponse);
     } catch (error) {
-      return this.formatErrorResponse(response, error);
+      this.handleError(response, error);
     }
   }
 }

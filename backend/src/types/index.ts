@@ -1,30 +1,28 @@
-import { Types } from 'mongoose';
+import { z as zod } from 'zod';
+import {
+  CategoryUserInputSchema,
+  MovieUserInputSchema,
+  CategoryDatabaseSchema,
+  MovieDatabaseSchema,
+  CategoryOptionalSchema,
+  MovieOptionalSchema,
+} from '../validation';
 
-type ID = {
-  _id: Types.ObjectId;
-};
+export type CategoryUserInput = zod.infer<typeof CategoryUserInputSchema>;
+export type MovieUserInput = zod.infer<typeof MovieUserInputSchema>;
 
-export type TCategory = {
-  name: string;
-} & ID;
+export type CategoryInDatabase = zod.infer<typeof CategoryDatabaseSchema>;
+export type MovieInDatabase = zod.infer<typeof MovieDatabaseSchema>;
 
-export type TMovie = {
-  title: string;
-  description: string;
-  categories: TCategory[];
-  releaseDate: Date;
-  imagePath: string;
-  duration: number;
-  grade: number;
-  deleted?: boolean;
-} & ID;
+export type CategoryUpdate = zod.infer<typeof CategoryOptionalSchema>;
+export type MovieUpdate = zod.infer<typeof MovieOptionalSchema>;
 
 enum SortOptions {
   asc = 'asc',
   desc = 'desc',
 }
 
-export type TMoviesQuery = {
+export type MoviesQuery = {
   search?: string;
   categories?: string;
   limit?: string;

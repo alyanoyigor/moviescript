@@ -1,16 +1,16 @@
 import { Service } from 'typedi';
 import MovieModel from '../models/movie.model';
-import { TMovie, TMoviesQuery } from '../types';
+import { MovieUserInput, MoviesQuery, MovieUpdate } from '../types';
 
 @Service()
 class MovieService {
   constructor(private movieModel: MovieModel) {}
 
-  async createMovie(data: TMovie) {
+  async createMovie(data: MovieUserInput) {
     return await this.movieModel.createMovie(data);
   }
 
-  async getMovieList(query: TMoviesQuery) {
+  async getMovieList(query: MoviesQuery) {
     const limit = Number(query.limit) || 8;
     const movies = this.movieModel.model
       .find({ deleted: { $ne: true } })
@@ -46,8 +46,8 @@ class MovieService {
     return movie;
   }
 
-  async updateMovie(data: Partial<TMovie>, param: Partial<TMovie>) {
-    return await this.movieModel.updateMovie(data, param);
+  async updateMovie(data: Partial<MovieUpdate>, id: string) {
+    return await this.movieModel.updateMovie(data, id);
   }
 
   async deleteMovie(id: string) {

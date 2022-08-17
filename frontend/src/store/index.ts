@@ -2,9 +2,11 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 import movieListReducer from '../pages/MovieList/reducers/movieList';
+import modalReducer from './modal/reducer/modal';
 
 const rootReducer = combineReducers({
   movieList: movieListReducer,
+  modal: modalReducer,
 });
 
 const store = configureStore({

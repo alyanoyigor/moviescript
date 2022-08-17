@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect } from 'react';
+import React, { MouseEvent, useState, useEffect, useCallback } from 'react';
 import { Box, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import {
@@ -14,6 +14,8 @@ import { movieListGetCategoriesSelector } from '../../selectors/movieListGetCate
 import { movieListGetCategoriesStart } from '../../thunks/movieListGetCategories';
 import { MenuCategories } from './components/MenuCategories';
 import { MenuAdd } from './components/MenuAdd';
+import { modalOpen } from '../../../../store/modal/reducer/modal';
+import { MODAL_NAME } from '../../../../store/modal/constants/modal';
 
 export const MovieListControls = () => {
   const {
@@ -63,6 +65,10 @@ export const MovieListControls = () => {
   const handleCloseAddMenu = () => {
     setAnchorElAddMenu(null);
   };
+
+  const handleCreateCategory = useCallback(() => {
+    dispatch(modalOpen({ name: MODAL_NAME.CATEGORY_CREATE }));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(movieListGetCategoriesStart());
@@ -120,6 +126,7 @@ export const MovieListControls = () => {
         Add
       </Button>
       <MenuAdd
+        handleCreateCategory={handleCreateCategory}
         anchorEl={anchorElAddMenu}
         open={openAddMenu}
         onClose={handleCloseAddMenu}

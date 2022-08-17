@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Preloader } from '../../../../../../components/Preloader';
+import { Error } from '../../../../../../components/Error';
 import { MovieCategory } from '../../../../../../types';
 import { Category } from '../Category';
 import { CategoriesSkeleton } from '../CategoriesSkeleton';
@@ -48,6 +49,7 @@ export const MenuCategories = (props: MenuCategoriesProps) => {
       {!error && !loading && categories.length === 0 && (
         <h1>Nothing was found</h1>
       )}
+      {error && !loading && <Error>{error}</Error>}
     </StyledMenu>
   );
 };

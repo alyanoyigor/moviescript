@@ -1,0 +1,1 @@
+export { ModalCategoryCreate } from './ModalCategoryCreate';

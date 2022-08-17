@@ -15,7 +15,7 @@ export const MovieListSkeleton = (props: MovieListSkeletonProps) => {
   return (
     <StyledSkeletonContainer>
       {Array.from(Array(moviesCount), (_, index) => (
-        <StyledMovieSkeletonWrapper>
+        <StyledMovieSkeletonWrapper key={index}>
           <StyledMovieSkeleton className="movie-skeleton" />
         </StyledMovieSkeletonWrapper>
       ))}

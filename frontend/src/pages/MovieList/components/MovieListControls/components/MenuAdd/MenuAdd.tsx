@@ -4,12 +4,22 @@ import { StyledMenu, StyledMenuItem } from './styled';
 
 type MenuAddProps = {
   open: boolean;
+  handleCreateCategory: () => void;
   onClose: () => void;
   anchorEl: Element | null;
 };
 
 export const MenuAdd = (props: MenuAddProps) => {
-  const { open, anchorEl, onClose } = props;
+  const { open, handleCreateCategory, anchorEl, onClose } = props;
+
+  const onClickCreateCategory = () => {
+    handleCreateCategory();
+    onClose();
+  };
+
+  const onClickCreateMovie = () => {
+    onClose();
+  };
 
   return (
     <StyledMenu
@@ -25,8 +35,8 @@ export const MenuAdd = (props: MenuAddProps) => {
         'aria-labelledby': 'add-button',
       }}
     >
-      <StyledMenuItem onClick={() => onClose()}>Movie</StyledMenuItem>
-      <StyledMenuItem onClick={() => onClose()}>Category</StyledMenuItem>
+      <StyledMenuItem onClick={onClickCreateMovie}>Movie</StyledMenuItem>
+      <StyledMenuItem onClick={onClickCreateCategory}>Category</StyledMenuItem>
     </StyledMenu>
   );
 };

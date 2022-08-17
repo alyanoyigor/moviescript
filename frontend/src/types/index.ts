@@ -1,10 +1,8 @@
-export type MovieCategory = {
+type ID = {
   _id: string;
-  name: string;
 };
 
-export type Movie = {
-  _id: string;
+export type MovieUserInput = {
   title: string;
   description: string;
   categories: MovieCategory[];
@@ -13,6 +11,14 @@ export type Movie = {
   duration: number;
   grade: number;
 };
+
+export type MovieCategoryUserInput = {
+  name: string;
+};
+
+export type MovieCategory = MovieCategoryUserInput & ID;
+
+export type Movie = MovieUserInput & ID;
 
 enum SortMoviesOptions {
   asc = 'asc',

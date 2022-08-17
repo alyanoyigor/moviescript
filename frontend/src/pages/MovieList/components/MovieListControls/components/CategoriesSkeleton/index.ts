@@ -1,0 +1,1 @@
+export { CategoriesSkeleton } from './CategoriesSkeleton';

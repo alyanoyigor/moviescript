@@ -1,4 +1,4 @@
-import { Checkbox, Menu, MenuItem, styled } from '@mui/material';
+import { Menu, styled } from '@mui/material';
 
 export const StyledMenu = styled(Menu)(({ theme }) => ({
   '& .MuiMenu-paper': {
@@ -42,18 +42,11 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
   },
 }));
 
-export const StyledMenuItem = styled(MenuItem)(() => ({
-  height: 45,
-}));
-
-export const StyledCheckbox = styled(Checkbox)(() => ({
-  color: '#ffffff',
-
-  '&:hover': {
-    backgroundColor: 'transparent',
-  },
-
-  '&.Mui-checked': {
-    color: '#ffffff',
-  },
-}));
+export const StyledCenterContainer = styled('div')`
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;

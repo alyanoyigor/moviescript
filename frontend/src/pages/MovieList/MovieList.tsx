@@ -5,16 +5,18 @@ import { useSelector } from 'react-redux';
 import { Preloader } from '../../components/Preloader';
 import { useAppDispatch } from '../../store';
 
-import { movieListFetchSelector } from './selectors/movieList';
+import { movieListFetchSelector } from './selectors/movieListFetch';
 import { MovieItem } from './components/MovieItem';
-import { movieListFetchStart } from './thunks/movieList';
+import { movieListFetchStart } from './thunks/movieListFetch';
 import { MovieListControls } from './components/MovieListControls';
-import { StyledListWrapper } from './styled';
+import { MovieListSkeleton } from './components/MovieListSkeleton';
+import { StyledListWrapper, StyledCenterContainer } from './styled';
 
 export const MovieList = () => {
   const [paginateLoading, setPaginateLoading] = useState(false);
 
-  const { data, loading, error } = useSelector(movieListFetchSelector);
+  const { data: movies, loading, error } = useSelector(movieListFetchSelector);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -23,33 +25,48 @@ export const MovieList = () => {
 
   return (
     <>
-      <MovieListControls />
-      {data.length > 0 && (
-        <StyledListWrapper>
-          {data.map((movie) => (
-            <MovieItem
-              key={movie._id}
-              title={movie.title}
-              releaseDate={movie.releaseDate}
-              movieId={movie._id}
-              imagePath={movie.imagePath}
-            />
-          ))}
-        </StyledListWrapper>
+      {loading && !error && movies.length > 0 && (
+        <StyledCenterContainer>
+          <Preloader width={96} height={96} />
+        </StyledCenterContainer>
       )}
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height={64}
-      >
-        {paginateLoading && <Preloader />}
-        {!paginateLoading && (
-          <Button sx={{ height: '42px' }} variant="contained">
-            Show more
-          </Button>
-        )}
-      </Box>
+      <MovieListControls />
+      {loading && !error && movies.length === 0 && (
+        <MovieListSkeleton moviesCount={8} />
+      )}
+      {!error && (
+        <>
+          {movies.length > 0 && (
+            <StyledListWrapper>
+              {movies.map((movie) => (
+                <MovieItem
+                  key={movie._id}
+                  title={movie.title}
+                  releaseDate={movie.releaseDate}
+                  movieId={movie._id}
+                  imagePath={movie.imagePath}
+                />
+              ))}
+            </StyledListWrapper>
+          )}
+          {movies.length === 0 && !loading && <h1>Nothing was found</h1>}
+        </>
+      )}
+      {movies.length >= 8 && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height={64}
+        >
+          {paginateLoading && <Preloader />}
+          {!paginateLoading && (
+            <Button sx={{ height: '42px' }} variant="contained">
+              Show more
+            </Button>
+          )}
+        </Box>
+      )}
     </>
   );
 };

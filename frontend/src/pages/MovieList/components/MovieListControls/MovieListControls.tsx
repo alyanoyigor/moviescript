@@ -1,18 +1,36 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
+import { useSelector } from 'react-redux';
 import {
   AddToPhotos as AddToPhotosIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
   Add as AddIcon,
 } from '@mui/icons-material';
+
 import { Search } from '../../../../components/Search';
+import { useAppDispatch } from '../../../../store';
+import { movieListGetCategoriesSelector } from '../../selectors/movieListGetCategories';
+import { movieListGetCategoriesStart } from '../../thunks/movieListGetCategories';
 import { MenuCategories } from './components/MenuCategories';
+import { MenuAdd } from './components/MenuAdd';
 
 export const MovieListControls = () => {
+  const {
+    data: categories,
+    loading,
+    error,
+  } = useSelector(movieListGetCategoriesSelector);
+  const dispatch = useAppDispatch();
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [anchorElAddMenu, setAnchorElAddMenu] = useState<HTMLElement | null>(
+    null
+  );
   const [isDesc, setIsDesc] = useState<boolean | null>(null);
+
   const open = Boolean(anchorEl);
+  const openAddMenu = Boolean(anchorElAddMenu);
 
   const onClickSortButton = () => {
     switch (isDesc) {
@@ -34,9 +52,21 @@ export const MovieListControls = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleOpenAddMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorElAddMenu(event.currentTarget);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleCloseAddMenu = () => {
+    setAnchorElAddMenu(null);
+  };
+
+  useEffect(() => {
+    dispatch(movieListGetCategoriesStart());
+  }, [dispatch]);
 
   return (
     <Box
@@ -50,7 +80,7 @@ export const MovieListControls = () => {
       <Button
         color="secondary"
         variant="contained"
-        aria-controls={open ? 'basic-menu' : undefined}
+        aria-controls={open ? 'categories-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleOpenMenuCategories}
@@ -58,7 +88,14 @@ export const MovieListControls = () => {
       >
         Categories
       </Button>
-      <MenuCategories onClose={handleClose} open={open} anchorEl={anchorEl} />
+      <MenuCategories
+        loading={loading}
+        error={error}
+        categories={categories}
+        onClose={handleClose}
+        open={open}
+        anchorEl={anchorEl}
+      />
       <Button
         onClick={onClickSortButton}
         variant="contained"
@@ -71,9 +108,22 @@ export const MovieListControls = () => {
       >
         Sort
       </Button>
-      <Button variant="outlined" color="light" startIcon={<AddIcon />}>
+      <Button
+        aria-controls={openAddMenu ? 'add-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={openAddMenu ? 'true' : undefined}
+        variant="outlined"
+        color="light"
+        startIcon={<AddIcon />}
+        onClick={handleOpenAddMenu}
+      >
         Add
       </Button>
+      <MenuAdd
+        anchorEl={anchorElAddMenu}
+        open={openAddMenu}
+        onClose={handleCloseAddMenu}
+      />
     </Box>
   );
 };

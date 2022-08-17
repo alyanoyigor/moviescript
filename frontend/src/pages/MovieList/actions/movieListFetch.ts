@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { Movie } from '../../../types';
-import { MovieListFetchState } from '../reducers/movieList';
+import { MovieListFetchState } from '../reducers/movieListFetch';
 
 export const movieListFetchInProgressAction = (state: MovieListFetchState) => {
   state.loading = true;

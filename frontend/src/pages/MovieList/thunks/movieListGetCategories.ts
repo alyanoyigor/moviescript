@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getCategories } from '../../../api/movies';
+import { getCategories } from '../../../api/categories';
 import { MovieCategory } from '../../../types';
 
 const MOVIE_LIST_GET_CATEGORIES_START_NAME = 'MOVIE_LIST_GET_CATEGORIES_START';

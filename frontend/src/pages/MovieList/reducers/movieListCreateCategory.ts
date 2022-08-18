@@ -12,7 +12,7 @@ export type MovieListCreateCategoryState = {
 const initialState: MovieListCreateCategoryState = {
   data: {},
   error: null,
-  loading: true,
+  loading: false,
 };
 
 const MOVIE_LIST_CREATE_CATEGORY_SLICE_NAME =

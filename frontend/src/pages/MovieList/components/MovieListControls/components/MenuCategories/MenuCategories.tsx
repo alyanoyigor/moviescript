@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Preloader } from '../../../../../../components/Preloader';
 import { Error } from '../../../../../../components/Error';
+import { CenterContainer } from '../../../../../../components/CenterContainer';
 import { MovieCategory } from '../../../../../../types';
 import { Category } from '../Category';
 import { CategoriesSkeleton } from '../CategoriesSkeleton';
-import { StyledCenterContainer, StyledMenu } from './styled';
+import { StyledMenu } from './styled';
 
 type MenuCategoriesProps = {
   open: boolean;
@@ -34,9 +35,9 @@ export const MenuCategories = (props: MenuCategoriesProps) => {
       }}
     >
       {loading && !error && categories.length > 0 && (
-        <StyledCenterContainer>
+        <CenterContainer>
           <Preloader />
-        </StyledCenterContainer>
+        </CenterContainer>
       )}
       {loading && !error && categories.length === 0 && (
         <CategoriesSkeleton categoriesCount={4} />

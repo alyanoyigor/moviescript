@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import theme from './styles/theme';
+import { getTheme } from './styles/theme';
 import App from './App';
 import store from './store';
 
@@ -16,8 +16,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <MuiThemeProvider theme={theme}>
-        <ThemeProvider theme={theme}>
+      <MuiThemeProvider theme={getTheme('dark')}>
+        <ThemeProvider theme={getTheme('dark')}>
           <App />
         </ThemeProvider>
       </MuiThemeProvider>

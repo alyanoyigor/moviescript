@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import { ThemeProvider } from '@mui/material';
 import { Path, UseFormReturn } from 'react-hook-form';
 
+import { getTheme } from '../../styles/theme';
 import { Input } from '../Input';
 import { FormSkeleton } from './FormSkeleton';
 import { StyledButton, StyledForm, StyledButtonsContainer } from './styled';
@@ -39,10 +41,10 @@ export const Form = <T,>(props: FormProps<T>) => {
     formState: { errors },
   } = hookFormData;
 
-  useEffect(() => reset(options), [options, reset]);
+  useEffect(() => reset(), [reset]);
 
   return (
-    <>
+    <ThemeProvider theme={getTheme('light')}>
       {fetchLoading && <FormSkeleton inputsCount={inputsInfo.length} />}
       {!fetchLoading && (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -72,6 +74,7 @@ export const Form = <T,>(props: FormProps<T>) => {
               Cancel
             </StyledButton>
             <StyledButton
+              color="secondary"
               disabled={loading}
               loading={loading}
               variant="contained"
@@ -82,11 +85,10 @@ export const Form = <T,>(props: FormProps<T>) => {
           </StyledButtonsContainer>
         </StyledForm>
       )}
-    </>
+    </ThemeProvider>
   );
 };
 
 Form.defaultProps = {
-  options: {},
   fetchLoading: false,
 };

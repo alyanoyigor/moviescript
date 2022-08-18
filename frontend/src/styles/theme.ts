@@ -26,41 +26,35 @@ declare module '@mui/material/IconButton' {
   }
 }
 
-declare module '@mui/material/TextField' {
-  interface TextFieldPropsColorOverrides {
-    silverGrey: true;
-  }
-}
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    common: {
-      black: '#0a0a0a',
-      white: '#fafafa',
+export const getTheme = (mode: 'dark' | 'light') => {
+  return createTheme({
+    palette: {
+      mode,
+      common: {
+        black: '#0a0a0a',
+        white: '#fafafa',
+      },
+      primary: {
+        main: '#e0262d',
+      },
+      secondary: {
+        main: '#E05326',
+      },
+      info: {
+        main: '#4026e0',
+      },
+      light: {
+        main: '#fafafa',
+        contrastText: '#0a0a0a',
+      },
+      dark: {
+        main: '#0a0a0a',
+        contrastText: '#fafafa',
+      },
+      silverGrey: {
+        main: '#565656',
+        contrastText: '#fafafa',
+      },
     },
-    primary: {
-      main: '#e0262d',
-    },
-    secondary: {
-      main: '#E05326',
-    },
-    info: {
-      main: '#4026e0',
-    },
-    light: {
-      main: '#fafafa',
-      contrastText: '#0a0a0a',
-    },
-    dark: {
-      main: '#0a0a0a',
-      contrastText: '#fafafa',
-    },
-    silverGrey: {
-      main: '#565656',
-      contrastText: '#fafafa',
-    },
-  },
-});
-
-export default theme;
+  });
+};

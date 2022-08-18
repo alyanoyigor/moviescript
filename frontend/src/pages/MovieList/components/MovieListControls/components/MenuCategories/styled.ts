@@ -41,12 +41,3 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
       'linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12))',
   },
 }));
-
-export const StyledCenterContainer = styled('div')`
-  position: absolute;
-  pointer-events: none;
-  z-index: 1000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;

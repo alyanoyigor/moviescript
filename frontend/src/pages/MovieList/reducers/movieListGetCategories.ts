@@ -18,7 +18,7 @@ const initialState: MovieListGetCategoriesState = {
 
 const MOVIE_LIST_GET_CATEGORIES_SLICE_NAME = 'MOVIE_LIST_GET_CATEGORIES_SLICE';
 
-const movieListFetchSlice = createSlice({
+const movieListGetCategoriesSlice = createSlice({
   name: MOVIE_LIST_GET_CATEGORIES_SLICE_NAME,
   initialState,
   reducers: {},
@@ -39,4 +39,4 @@ const movieListFetchSlice = createSlice({
   },
 });
 
-export default movieListFetchSlice.reducer;
+export default movieListGetCategoriesSlice.reducer;

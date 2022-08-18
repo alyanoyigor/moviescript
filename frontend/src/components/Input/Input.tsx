@@ -1,6 +1,7 @@
 import React from 'react';
+import { TextField, ThemeProvider } from '@mui/material';
 import { Path, PathValue, RefCallBack } from 'react-hook-form';
-import { StyledTextField } from './styled';
+import { getTheme } from '../../styles/theme';
 
 const defaultProps = {
   error: '',
@@ -26,18 +27,21 @@ export const Input = <T,>(props: InputProps<T>) => {
   const { error, inputOptions, label, type, disabled, valueWatcher } = props;
 
   return (
-    <StyledTextField
-      color="silverGrey"
-      type={type}
-      label={label}
-      disabled={disabled}
-      size="small"
-      error={Boolean(error)}
-      helperText={error}
-      variant="outlined"
-      InputLabelProps={{ shrink: Boolean(valueWatcher) }}
-      {...inputOptions}
-    />
+    <ThemeProvider theme={getTheme('light')}>
+      <TextField
+        color="secondary"
+        type={type}
+        label={label}
+        disabled={disabled}
+        autoComplete="off"
+        size="small"
+        error={Boolean(error)}
+        helperText={error}
+        variant="outlined"
+        InputLabelProps={{ shrink: Boolean(valueWatcher) }}
+        {...inputOptions}
+      />
+    </ThemeProvider>
   );
 };
 

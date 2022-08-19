@@ -6,5 +6,5 @@ const movieListCreateCategoryStateSelector = (state: RootState) =>
 
 export const movieListCreateCategorySelector = createSelector(
   movieListCreateCategoryStateSelector,
-  (state) => ({ data: state.data, loading: state.loading, error: state.error })
+  (state) => ({ loading: state.loading, error: state.error })
 );

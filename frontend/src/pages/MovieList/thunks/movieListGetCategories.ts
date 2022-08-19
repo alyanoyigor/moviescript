@@ -9,8 +9,9 @@ export const movieListGetCategoriesStart = createAsyncThunk<
   never
 >(MOVIE_LIST_GET_CATEGORIES_START_NAME, async (_data, { rejectWithValue }) => {
   try {
-    const movieList = await getCategories();
-    return { data: movieList };
+    const categories = await getCategories();
+
+    return { data: categories };
   } catch (error) {
     return rejectWithValue({ error });
   }

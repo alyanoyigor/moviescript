@@ -38,7 +38,7 @@ export const getTheme = (mode: 'dark' | 'light') => {
         main: '#e0262d',
       },
       secondary: {
-        main: '#E05326',
+        main: '#e05326',
       },
       info: {
         main: '#4026e0',

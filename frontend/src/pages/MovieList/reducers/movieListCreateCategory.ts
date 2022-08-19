@@ -1,16 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { MovieCategory } from '../../../types';
 import * as actions from '../actions/movieListCreateCategory';
 
 export type MovieListCreateCategoryState = {
-  data: MovieCategory | Record<string, never>;
   error: string | null;
   loading: boolean;
 };
 
 const initialState: MovieListCreateCategoryState = {
-  data: {},
   error: null,
   loading: false,
 };

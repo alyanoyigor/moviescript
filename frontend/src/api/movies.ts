@@ -1,4 +1,4 @@
-import { Movie } from '../types';
+import { Movie, MovieUserInput } from '../types';
 import client from './client';
 
 export const getMovies = async () => {
@@ -12,6 +12,14 @@ export const getMovies = async () => {
 export const getMovie = async (id: string) => {
   try {
     return await client.get<never, Movie>(`/movies/${id}`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const createMovie = async (movie: MovieUserInput) => {
+  try {
+    return await client.post<never, Movie>(`/movies`, movie);
   } catch (error) {
     return Promise.reject(error);
   }

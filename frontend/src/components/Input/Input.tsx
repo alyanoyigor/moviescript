@@ -7,6 +7,7 @@ const defaultProps = {
   error: '',
   type: 'text',
   disabled: false,
+  multiline: false,
 };
 
 type InputProps<T> = {
@@ -21,15 +22,28 @@ type InputProps<T> = {
   disabled?: boolean;
   type?: string;
   error?: string;
+  multiline?: boolean;
+  rows?: number;
 } & typeof defaultProps;
 
 export const Input = <T,>(props: InputProps<T>) => {
-  const { error, inputOptions, label, type, disabled, valueWatcher } = props;
+  const {
+    error,
+    inputOptions,
+    label,
+    type,
+    disabled,
+    valueWatcher,
+    multiline,
+    rows,
+  } = props;
 
   return (
     <ThemeProvider theme={getTheme('light')}>
       <TextField
         color="secondary"
+        multiline={multiline}
+        rows={rows}
         type={type}
         label={label}
         disabled={disabled}

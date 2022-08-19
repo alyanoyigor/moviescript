@@ -6,10 +6,6 @@ import { Modal } from '../../../../components/Modal';
 import { Form } from '../../../../components/Form';
 import { MovieCategoryUserInput } from '../../../../types';
 
-type FormValues = {
-  name: string;
-};
-
 type ModalCategoryCreateProps = {
   open: boolean;
   handleClose: () => void;
@@ -19,10 +15,10 @@ type ModalCategoryCreateProps = {
 
 export const ModalCategoryCreate = (props: ModalCategoryCreateProps) => {
   const { open, handleClose, loading, handleCreateCategory } = props;
-  const inputs: { label: string; name: Path<FormValues> }[] = [
+  const inputs: { label: string; name: Path<MovieCategoryUserInput> }[] = [
     { label: 'Name', name: 'name' },
   ];
-  const hookFormData = useForm<FormValues>({
+  const hookFormData = useForm<MovieCategoryUserInput>({
     // resolver: yupResolver(schema),
   });
 

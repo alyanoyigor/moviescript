@@ -1,0 +1,1 @@
+export { ModalMovieCreate } from './ModalMovieCreate';

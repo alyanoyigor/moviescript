@@ -4,20 +4,28 @@ import { StyledMenu, StyledMenuItem } from './styled';
 
 type MenuAddProps = {
   open: boolean;
-  handleCreateCategory: () => void;
+  handleOpenModalCategoryCreate: () => void;
+  handleOpenModalMovieCreate: () => void;
   onClose: () => void;
   anchorEl: Element | null;
 };
 
 export const MenuAdd = (props: MenuAddProps) => {
-  const { open, handleCreateCategory, anchorEl, onClose } = props;
+  const {
+    open,
+    handleOpenModalCategoryCreate,
+    handleOpenModalMovieCreate,
+    anchorEl,
+    onClose,
+  } = props;
 
   const onClickCreateCategory = () => {
-    handleCreateCategory();
+    handleOpenModalCategoryCreate();
     onClose();
   };
 
   const onClickCreateMovie = () => {
+    handleOpenModalMovieCreate();
     onClose();
   };
 

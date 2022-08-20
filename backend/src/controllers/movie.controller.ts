@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
 import { Service } from 'typedi';
+import fsPromises from 'fs/promises';
+import { v4 as uuidv4 } from 'uuid';
 
 import MovieService from '../services/movie.service';
 import { MovieOptionalSchema, MovieUserInputSchema } from '../validation';
 import BaseController from './base.controller';
+
+const { HOST } = process.env;
 
 @Service()
 class MovieController extends BaseController {
@@ -60,6 +64,27 @@ class MovieController extends BaseController {
       return this.formateSuccessResponse(response, deletedResponse);
     } catch (error) {
       this.handleError(response, error);
+    }
+  }
+
+  async uploadMovieImage(request: Request, response: Response) {
+    try {
+      if (request.files?.file) {
+        const file = request.files.file;
+        if (!Array.isArray(file)) {
+          const dirName = uuidv4();
+          await fsPromises.mkdir(`${__dirname}/../public/movies/${dirName}`);
+          await file.mv(
+            `${__dirname}/../public/movies/${dirName}/${file.name}`
+          );
+          return this.formateSuccessResponse(response, {
+            url: `${HOST}/public/movies/${dirName}/${file.name}`,
+          });
+        }
+      }
+      return this.formatErrorResponse(response, 'No file');
+    } catch (error) {
+      return this.formatErrorResponse(response, error);
     }
   }
 }

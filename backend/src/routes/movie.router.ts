@@ -11,6 +11,10 @@ movieRouter.get('/:id', movieController.getMovie.bind(movieController));
 movieRouter.post('/', movieController.createMovie.bind(movieController));
 movieRouter.patch('/:id', movieController.updateMovie.bind(movieController));
 
+movieRouter.post(
+  '/upload',
+  movieController.uploadMovieImage.bind(movieController)
+);
 movieRouter.delete('/:id', movieController.deleteMovie.bind(movieController));
 
 export default movieRouter;

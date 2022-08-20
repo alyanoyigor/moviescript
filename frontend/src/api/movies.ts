@@ -24,3 +24,11 @@ export const createMovie = async (movie: MovieUserInput) => {
     return Promise.reject(error);
   }
 };
+
+export const createMovieImage = async (image: FormData) => {
+  try {
+    return await client.post<never, { url: string }>('/movies/upload', image);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

@@ -9,7 +9,9 @@ import {
   TextField,
   ThemeProvider,
   FormControl,
+  Button,
 } from '@mui/material';
+import ImageIcon from '@mui/icons-material/Image';
 import { Controller, useForm } from 'react-hook-form';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -17,14 +19,18 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 import { Input } from '../../../../components/Input';
 import { getTheme } from '../../../../styles/theme';
-import { MovieUserInput, MovieCategory } from '../../../../types';
+import {
+  MovieUserInput,
+  MovieCategory,
+  MovieFormSchema,
+} from '../../../../types';
 import { StyledButton, StyledForm, StyledButtonsContainer } from './styled';
 import { Preloader } from '../../../../components/Preloader';
 
 type MovieFormProps = {
   loading: boolean;
   onCancel: () => void;
-  onSubmit: (data: MovieUserInput) => void;
+  onSubmit: (data: MovieFormSchema) => void;
   categories: MovieCategory[];
   fetchCategoriesLoading: boolean;
   options?: MovieUserInput;
@@ -48,7 +54,7 @@ export const MovieForm = (props: MovieFormProps) => {
     watch,
     control,
     formState: { errors },
-  } = useForm<MovieUserInput>();
+  } = useForm<MovieFormSchema>();
 
   useEffect(() => reset(), [reset]);
 
@@ -57,14 +63,14 @@ export const MovieForm = (props: MovieFormProps) => {
       {/* {fetchLoading && <FormSkeleton inputsCount={inputsInfo.length} />} */}
       {!fetchLoading && (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Input<MovieUserInput>
+          <Input<MovieFormSchema>
             disabled={loading}
             valueWatcher={watch('title')}
             inputOptions={register('title')}
             error={errors['title']?.message}
             label="Title"
           />
-          <Input<MovieUserInput>
+          <Input<MovieFormSchema>
             multiline={true}
             rows={3}
             disabled={loading}
@@ -73,9 +79,10 @@ export const MovieForm = (props: MovieFormProps) => {
             error={errors['description']?.message}
             label="Description"
           />
-          <Input<MovieUserInput>
+          <Input<MovieFormSchema>
             disabled={loading}
             type="number"
+            min={1}
             valueWatcher={watch('duration')}
             inputOptions={register('duration')}
             error={errors['duration']?.message}
@@ -87,6 +94,7 @@ export const MovieForm = (props: MovieFormProps) => {
             render={({ field }) => (
               <TextField
                 color="secondary"
+                size="small"
                 select
                 label="Grade"
                 SelectProps={{
@@ -170,12 +178,44 @@ export const MovieForm = (props: MovieFormProps) => {
                 <DesktopDatePicker
                   label="Release date"
                   inputFormat="MM/DD/YYYY"
-                  renderInput={(params) => <TextField {...params} />}
+                  openTo="year"
+                  views={['year', 'month', 'day']}
+                  PopperProps={{
+                    sx: {
+                      '& .Mui-selected': {
+                        bgcolor: '#e05326 !important',
+                      },
+                      '& .Mui-selected:hover': {
+                        bgcolor: '#d14314 !important',
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    sx: { '& .MuiSvgIcon-root': { color: 'secondary.main' } },
+                  }}
+                  renderInput={(params) => (
+                    <TextField color="secondary" {...params} />
+                  )}
                   {...field}
+                  value={field.value || null}
                 />
               )}
             />
           </LocalizationProvider>
+          <Button
+            variant="contained"
+            color="secondary"
+            component="label"
+            startIcon={<ImageIcon />}
+          >
+            Upload
+            <input
+              hidden
+              accept="image/*"
+              type="file"
+              {...register('imagePath')}
+            />
+          </Button>
           <StyledButtonsContainer
             display="flex"
             gap="4px"

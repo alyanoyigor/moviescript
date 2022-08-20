@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 
 import { Modal } from '../../../../components/Modal';
-import { MovieUserInput, MovieCategory } from '../../../../types';
+import { MovieCategory, MovieFormSchema } from '../../../../types';
 import { MovieForm } from '../MovieForm';
 
 type ModalMovieCreateProps = {
@@ -11,7 +11,7 @@ type ModalMovieCreateProps = {
   loading: boolean;
   categories: MovieCategory[];
   fetchCategoriesLoading: boolean;
-  handleCreateMovie: (data: MovieUserInput) => void;
+  handleCreateMovie: (data: MovieFormSchema) => void;
 };
 
 export const ModalMovieCreate = (props: ModalMovieCreateProps) => {

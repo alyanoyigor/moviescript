@@ -2,14 +2,37 @@ type ID = {
   _id: string;
 };
 
-export type MovieUserInput = {
+type MovieDate = {
+  $D: number;
+  $H: number;
+  $L: string;
+  $M: number;
+  $W: number;
+  $d: Date;
+  $m: number;
+  $ms: number;
+  $s: number;
+  $u: undefined;
+  $x: object;
+  $y: number;
+};
+
+export type MovieDefault = {
   title: string;
   description: string;
   categories: MovieCategory[];
-  releaseDate: string;
-  imagePath: string;
   duration: number;
   grade: number;
+};
+
+export type MovieUserInput = MovieDefault & {
+  imagePath: string;
+  releaseDate: Date | string;
+};
+
+export type MovieFormSchema = MovieDefault & {
+  releaseDate: MovieDate;
+  imagePath: FileList;
 };
 
 export type MovieCategoryUserInput = {
@@ -18,7 +41,15 @@ export type MovieCategoryUserInput = {
 
 export type MovieCategory = MovieCategoryUserInput & ID;
 
-export type Movie = MovieUserInput & ID;
+export type Movie = {
+  title: string;
+  description: string;
+  categories: MovieCategory[];
+  releaseDate: string;
+  imagePath: string;
+  duration: number;
+  grade: number;
+} & ID;
 
 enum SortMoviesOptions {
   asc = 'asc',

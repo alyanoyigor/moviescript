@@ -20,6 +20,7 @@ type InputProps<T> = {
   label: string;
   valueWatcher?: PathValue<T, Path<T>>;
   disabled?: boolean;
+  min?: number;
   type?: string;
   error?: string;
   multiline?: boolean;
@@ -36,6 +37,7 @@ export const Input = <T,>(props: InputProps<T>) => {
     valueWatcher,
     multiline,
     rows,
+    min,
   } = props;
 
   return (
@@ -44,6 +46,11 @@ export const Input = <T,>(props: InputProps<T>) => {
         color="secondary"
         multiline={multiline}
         rows={rows}
+        InputProps={{
+          inputProps: {
+            min,
+          },
+        }}
         type={type}
         label={label}
         disabled={disabled}

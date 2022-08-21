@@ -1,9 +1,9 @@
-import { Movie, MovieUserInput } from '../types';
+import { Movie, MovieUserInput, MoviesQuery } from '../types';
 import client from './client';
 
-export const getMovies = async () => {
+export const getMovies = async (queries?: MoviesQuery) => {
   try {
-    return await client.get<never, Movie[]>('/movies');
+    return await client.get<never, Movie[]>('/movies', { params: queries });
   } catch (error) {
     return Promise.reject(error);
   }

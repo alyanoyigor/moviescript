@@ -1,9 +1,11 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { Path, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Modal } from '../../../../components/Modal';
 import { Form } from '../../../../components/Form';
+import { categoryCreateSchema } from '../../../../validation/categoryCreateSchema';
 import { MovieCategoryUserInput } from '../../../../types';
 
 type ModalCategoryCreateProps = {
@@ -19,7 +21,7 @@ export const ModalCategoryCreate = (props: ModalCategoryCreateProps) => {
     { label: 'Name', name: 'name' },
   ];
   const hookFormData = useForm<MovieCategoryUserInput>({
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(categoryCreateSchema),
   });
 
   return (

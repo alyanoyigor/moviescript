@@ -2,36 +2,20 @@ type ID = {
   _id: string;
 };
 
-type MovieDate = {
-  $D: number;
-  $H: number;
-  $L: string;
-  $M: number;
-  $W: number;
-  $d: Date;
-  $m: number;
-  $ms: number;
-  $s: number;
-  $u: undefined;
-  $x: object;
-  $y: number;
-};
-
 export type MovieDefault = {
   title: string;
   description: string;
   categories: MovieCategory[];
   duration: number;
+  releaseDate: Date;
   grade: number;
 };
 
 export type MovieUserInput = MovieDefault & {
   imagePath: string;
-  releaseDate: Date | string;
 };
 
 export type MovieFormSchema = MovieDefault & {
-  releaseDate: MovieDate;
   imagePath: FileList;
 };
 

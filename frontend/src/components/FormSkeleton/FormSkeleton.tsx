@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import { StyledSkeleton, StyledButtonsContainer } from '../styled';
+import { StyledSkeleton, StyledButtonsContainer } from './styled';
 
 type FormSkeletonProps = {
   inputsCount: number;

@@ -4,7 +4,7 @@ import { Path, UseFormReturn } from 'react-hook-form';
 
 import { getTheme } from '../../styles/theme';
 import { Input } from '../Input';
-import { FormSkeleton } from './FormSkeleton';
+import { FormSkeleton } from '../FormSkeleton';
 import { StyledButton, StyledForm, StyledButtonsContainer } from './styled';
 
 type InputInfo<T> = {

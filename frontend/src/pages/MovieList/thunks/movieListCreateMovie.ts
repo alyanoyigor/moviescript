@@ -22,7 +22,6 @@ export const movieListCreateMovieStart = createAsyncThunk<
 >(MOVIE_LIST_CREATE_MOVIE_START_TYPE, async (data, { dispatch }) => {
   try {
     const { movie } = data;
-    const date = movie.releaseDate['$d'];
     const file = movie.imagePath[0];
     const formData = new FormData();
     formData.append('file', file);
@@ -31,7 +30,6 @@ export const movieListCreateMovieStart = createAsyncThunk<
     const updatedMovie = {
       ...movie,
       imagePath: image.url,
-      releaseDate: date,
       duration: Number(movie.duration),
     };
 

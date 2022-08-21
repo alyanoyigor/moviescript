@@ -67,12 +67,24 @@ class MovieController extends BaseController {
     }
   }
 
+  async checkAndCreateDirectory(path: string) {
+    try {
+      await fsPromises.access(path);
+    } catch (error) {
+      await fsPromises.mkdir(path);
+    }
+  }
+
   async uploadMovieImage(request: Request, response: Response) {
     try {
       if (request.files?.file) {
         const file = request.files.file;
         if (!Array.isArray(file)) {
           const dirName = uuidv4();
+
+          await this.checkAndCreateDirectory(`${__dirname}/../public`);
+          await this.checkAndCreateDirectory(`${__dirname}/../public/movies`);
+
           await fsPromises.mkdir(`${__dirname}/../public/movies/${dirName}`);
           await file.mv(
             `${__dirname}/../public/movies/${dirName}/${file.name}`

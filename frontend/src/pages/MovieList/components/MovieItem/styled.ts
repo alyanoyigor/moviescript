@@ -69,7 +69,7 @@ export const StyledCardContainer = styled(Link)`
 export const StyledCard = styled(Card)`
   background-position: center;
   height: 400px;
-  background-image:  url(${(props: { image: string }) => props.image}) !important;
+  background-image: url(${(props: { image: string }) => props.image}) !important;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;

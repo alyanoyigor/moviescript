@@ -11,9 +11,13 @@ export const Category = (props: CategoryProps) => {
   const { category } = props;
   const [checked, setChecked] = useState(false);
 
+  const onClickCategory = () => {
+    setChecked((prevChecked) => !prevChecked);
+  };
+
   return (
     <StyledMenuItem
-      onClick={() => setChecked((prevChecked) => !prevChecked)}
+      onClick={onClickCategory}
       key={category._id}
       value={category.name}
     >

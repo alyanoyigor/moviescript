@@ -35,12 +35,12 @@ export type Movie = {
   grade: number;
 } & ID;
 
-enum SortMoviesOptions {
+export enum SortMoviesOptions {
   asc = 'asc',
   desc = 'desc',
 }
 
-export type MoviesQuery = {
+export type MovieQueries = {
   search?: string;
   categories?: string;
   limit?: string;

@@ -7,3 +7,8 @@ export const movieListFetchSelector = createSelector(
   movieListSelector,
   (state) => ({ data: state.data, loading: state.loading, error: state.error })
 );
+
+export const movieListFetchQueriesSelector = createSelector(
+  movieListSelector,
+  (state) => ({ queries: state.queries })
+);

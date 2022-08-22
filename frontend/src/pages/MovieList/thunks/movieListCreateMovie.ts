@@ -57,7 +57,6 @@ export const movieListBeforeCreateMovieStart = createAsyncThunk<
   async (_data, { rejectWithValue }) => {
     try {
       const categories = await getCategories();
-      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       return { data: categories };
     } catch (error) {

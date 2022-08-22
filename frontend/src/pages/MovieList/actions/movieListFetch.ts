@@ -9,11 +9,15 @@ export const movieListFetchInProgressAction = (state: MovieListFetchState) => {
 
 export const movieListFetchSuccessAction = (
   state: MovieListFetchState,
-  action: PayloadAction<{ data: Movie[] }>
+  action: PayloadAction<{
+    movies: Movie[];
+    count: number;
+  }>
 ) => {
-  const { data } = action.payload;
+  const { movies, count } = action.payload;
 
-  state.data = data;
+  state.count = count;
+  state.data = movies;
   state.loading = false;
 };
 
@@ -29,14 +33,8 @@ export const movieListFetchErrorAction = (
 
 export const movieListAddQueryAction = (
   state: MovieListFetchState,
-  action: PayloadAction<MovieQueries>
+  action: PayloadAction<{ query: { name: string; value: string } }>
 ) => {
-  state.queries = { ...state.queries, ...action.payload };
-};
-
-export const movieListRemoveQueryAction = (
-  state: MovieListFetchState,
-  action: PayloadAction<keyof MovieQueries>
-) => {
-  delete state.queries[action.payload];
+  const { query } = action.payload;
+  state.queries = { ...state.queries, ...{ [query.name]: query.value } };
 };

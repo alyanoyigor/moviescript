@@ -1,18 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getMovies } from '../../../api/movies';
-import { Movie, MovieQueries } from '../../../types';
+import { Movie } from '../../../types';
+import { getQueries } from '../../../utils/getQueries';
 
 const MOVIE_LIST_FETCH_START_TYPE = 'MOVIE_LIST_FETCH_START';
 
 export const movieListFetchStart = createAsyncThunk<
-  { data: Movie[] },
-  MovieQueries | undefined
->(MOVIE_LIST_FETCH_START_TYPE, async (queries, { rejectWithValue }) => {
+  { movies: Movie[]; count: number },
+  never
+>(MOVIE_LIST_FETCH_START_TYPE, async (_, { rejectWithValue }) => {
   try {
-    const movieList = await getMovies(queries);
+    const queries = getQueries();
+
+    const { movies, allMoviesCount } = await getMovies(queries);
     // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return { data: movieList };
+    return { movies, count: allMoviesCount };
   } catch (error) {
     return rejectWithValue({ error });
   }

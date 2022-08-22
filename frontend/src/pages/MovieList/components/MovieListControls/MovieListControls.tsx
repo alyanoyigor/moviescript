@@ -5,14 +5,11 @@ import React, {
   useCallback,
   ChangeEvent,
 } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import {
   Box,
   Button,
   FormControl,
   Select,
-  MenuItem,
-  Checkbox,
   ListItemText,
   Input,
   SelectChangeEvent,
@@ -24,6 +21,7 @@ import {
   ArrowDownward as ArrowDownwardIcon,
   Add as AddIcon,
 } from '@mui/icons-material';
+import debounce from 'lodash.debounce';
 
 import { Search } from '../../../../components/Search';
 import { CenterContainer } from '../../../../components/CenterContainer';
@@ -34,20 +32,35 @@ import { modalOpen } from '../../../../store/modal/reducer/modal';
 import { MODAL_NAME } from '../../../../store/modal/constants/modal';
 import { movieListGetCategoriesSelector } from '../../selectors/movieListGetCategories';
 import { movieListGetCategoriesStart } from '../../thunks/movieListGetCategories';
+import { movieListFetchStart } from '../../thunks/movieListFetch';
 import { movieListBeforeCreateMovieStart } from '../../thunks/movieListCreateMovie';
-import { SortMoviesOptions } from '../../../../types';
+import { movieListAddQuery } from '../../reducers/movieListFetch';
+import { MovieQueries, SortMoviesOptions } from '../../../../types';
 import { MenuAdd } from './components/MenuAdd';
 import { CategoriesSkeleton } from './components/CategoriesSkeleton';
+import { StyledCheckbox, StyledMenuItem, sxSelectCategory } from './styled';
+import { setQueries } from '../../../../utils/setQueries';
 
-export const MovieListControls = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+type MovieListControlsProps = {
+  queries: MovieQueries;
+};
 
+export const MovieListControls = (props: MovieListControlsProps) => {
+  const { queries } = props;
   const {
     data: categories,
     loading,
     error,
   } = useSelector(movieListGetCategoriesSelector);
   const dispatch = useAppDispatch();
+
+  const getMovieList = (query: { name: string; value: string }) => {
+    setQueries(query);
+    dispatch(movieListFetchStart());
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceFn = useCallback(debounce(getMovieList, 500), []);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [anchorElAddMenu, setAnchorElAddMenu] = useState<HTMLElement | null>(
@@ -56,21 +69,27 @@ export const MovieListControls = () => {
   const open = Boolean(anchorEl);
   const openAddMenu = Boolean(anchorElAddMenu);
 
+  const sortActions = {
+    asc: () => {
+      const query = { name: 'sort', value: SortMoviesOptions.desc };
+      dispatch(movieListAddQuery({ query }));
+      return query;
+    },
+    desc: () => {
+      const query = { name: 'sort', value: '' };
+      dispatch(movieListAddQuery({ query }));
+      return query;
+    },
+  };
+
   const onClickSortButton = () => {
-    switch (searchParams.get('sort')) {
-      case null:
-        searchParams.set('sort', SortMoviesOptions.desc);
-        break;
-      case SortMoviesOptions.desc:
-        searchParams.set('sort', SortMoviesOptions.asc);
-        break;
-      case SortMoviesOptions.asc:
-        searchParams.delete('sort');
-        break;
-      default:
-        break;
+    if (queries.sort && sortActions[queries.sort]) {
+      const query = sortActions[queries.sort]();
+      return getMovieList(query);
     }
-    setSearchParams(searchParams);
+    const query = { name: 'sort', value: SortMoviesOptions.asc };
+    dispatch(movieListAddQuery({ query }));
+    getMovieList(query);
   };
 
   const handleOpenMenuCategories = (event: MouseEvent<HTMLButtonElement>) => {
@@ -99,24 +118,17 @@ export const MovieListControls = () => {
   }, [dispatch]);
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value === '') {
-      searchParams.delete('search');
-    } else {
-      searchParams.set('search', value);
-    }
-    setSearchParams(searchParams);
+    const query = { name: 'search', value: event.target.value };
+    dispatch(movieListAddQuery({ query }));
+    debounceFn(query);
   };
 
   const handleChangeCategory = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;
     const categoryList = typeof value === 'string' ? value.split(',') : value;
-    if (categoryList.length === 0) {
-      searchParams.delete('categories');
-    } else {
-      searchParams.set('categories', categoryList.join(','));
-    }
-    setSearchParams(searchParams);
+    const query = { name: 'categories', value: categoryList.join(',') };
+    dispatch(movieListAddQuery({ query }));
+    getMovieList(query);
   };
 
   useEffect(() => {
@@ -131,11 +143,7 @@ export const MovieListControls = () => {
       marginBottom="16px"
       flexWrap="wrap"
     >
-      <Search
-        value={searchParams.get('search') || ''}
-        onChange={handleChangeSearch}
-      />
-
+      <Search value={queries.search || ''} onChange={handleChangeSearch} />
       <FormControl>
         <Button
           id="openMenu"
@@ -148,7 +156,7 @@ export const MovieListControls = () => {
         </Button>
         <Select
           multiple
-          value={searchParams.get('categories')?.split(',') || []}
+          value={queries.categories?.split(',') || []}
           onChange={handleChangeCategory}
           input={<Input id="select-multiple-checkbox" />}
           style={{ display: 'none' }}
@@ -157,8 +165,16 @@ export const MovieListControls = () => {
           renderValue={(selected) => selected.join(',')}
           MenuProps={{
             anchorEl: document.getElementById('openMenu'),
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+            },
             PaperProps: {
-              style: { width: '200px', maxHeight: 200, overflow: 'auto' },
+              sx: sxSelectCategory,
             },
           }}
         >
@@ -173,14 +189,18 @@ export const MovieListControls = () => {
           {!error &&
             categories.length > 0 &&
             categories.map((category) => {
-              const categoryParams = searchParams.get('categories') || '';
+              const categoryParams = queries.categories || '';
               const isChecked =
                 categoryParams.split(',').indexOf(category.name) > -1;
               return (
-                <MenuItem key={category._id} value={category.name}>
-                  <Checkbox checked={isChecked} />
+                <StyledMenuItem
+                  color="secondary"
+                  key={category._id}
+                  value={category.name}
+                >
+                  <StyledCheckbox disableRipple={true} checked={isChecked} />
                   <ListItemText primary={category.name} />
-                </MenuItem>
+                </StyledMenuItem>
               );
             })}
           {!error && !loading && categories.length === 0 && (
@@ -195,12 +215,8 @@ export const MovieListControls = () => {
         color="info"
         sx={{ width: '90px' }}
         startIcon={
-          (searchParams.get('sort') === SortMoviesOptions.desc && (
-            <ArrowUpwardIcon />
-          )) ||
-          (searchParams.get('sort') === SortMoviesOptions.asc && (
-            <ArrowDownwardIcon />
-          ))
+          (queries.sort === SortMoviesOptions.desc && <ArrowUpwardIcon />) ||
+          (queries.sort === SortMoviesOptions.asc && <ArrowDownwardIcon />)
         }
       >
         Sort

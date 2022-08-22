@@ -10,26 +10,42 @@ class MovieService {
     return await this.movieModel.createMovie(data);
   }
 
+  async getAllNotDeletedMovies() {
+    return await this.movieModel.model.find({
+      deleted: { $ne: true },
+    });
+  }
+
   async getMovieList(query: MoviesQuery) {
-    const limit = Number(query.limit) || 8;
-    const movies = this.movieModel.model
+    const allMovies = await this.getAllNotDeletedMovies();
+
+    let limit;
+    if (Number(query.limit) <= 8) {
+      limit = 8;
+    } else {
+      limit = Number(query.limit) || 8;
+    }
+
+    const moviesModel = this.movieModel.model
       .find({ deleted: { $ne: true } })
       .limit(limit);
 
     if (query.search) {
-      movies.find({ title: { $regex: query.search, $options: 'i' } });
+      moviesModel.find({ title: { $regex: query.search, $options: 'i' } });
     }
 
     if (query.categories) {
       const categories = query.categories.split(',');
-      movies.find({ 'categories.name': { $in: categories } });
+      moviesModel.find({ 'categories.name': { $in: categories } });
     }
 
     if (query.sort) {
-      movies.sort({ title: query.sort });
+      moviesModel.sort({ title: query.sort });
     }
 
-    return await movies;
+    const movies = await moviesModel;
+
+    return { movies, allMoviesCount: allMovies.length };
   }
 
   async getMovie(id: string) {

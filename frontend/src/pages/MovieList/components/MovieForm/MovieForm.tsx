@@ -145,7 +145,7 @@ export const MovieForm = (props: MovieFormProps) => {
                     }
                     MenuProps={{
                       PaperProps: {
-                        style: {
+                        sx: {
                           maxHeight: '200px',
                         },
                       },

@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
 
 import { useAppDispatch } from '../../store';
 import { modalClose } from '../../store/modal/reducer/modal';
@@ -12,6 +11,7 @@ import { MovieCategoryUserInput, Position, MovieFormSchema } from '../../types';
 import { Preloader } from '../../components/Preloader';
 import { Error } from '../../components/Error';
 import { CenterContainer } from '../../components/CenterContainer';
+import { setQueries } from '../../utils/setQueries';
 
 import { movieListFetchSelector } from './selectors/movieListFetch';
 import { movieListCreateCategorySelector } from './selectors/movieListCreateCategory';
@@ -31,12 +31,20 @@ import { ModalCategoryCreate } from './components/ModalCategoryCreate';
 import { ModalMovieCreate } from './components/ModalMovieCreate';
 
 import { StyledListWrapper } from './styled';
+import { movieListAddQuery } from './reducers/movieListFetch';
 
 export const MovieList = () => {
-  const [paginateLoading, setPaginateLoading] = useState(false);
-  const [searchParams] = useSearchParams();
+  const {
+    data: movies,
+    loading,
+    error,
+    count,
+    queries,
+  } = useSelector(movieListFetchSelector);
 
-  const { data: movies, loading, error } = useSelector(movieListFetchSelector);
+  const OFFSET_LIMIT = 8;
+  const limit = Number(queries.limit) || OFFSET_LIMIT;
+
   const { loading: categoryCreateLoading } = useSelector(
     movieListCreateCategorySelector
   );
@@ -68,22 +76,27 @@ export const MovieList = () => {
     [dispatch]
   );
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      dispatch(
-        movieListFetchStart(Object.fromEntries(Array.from(searchParams)))
-      );
-    }, 500);
-    return () => {
-      clearTimeout(timerId);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams.get('search'), dispatch]);
+  const onClickShowMoreMovies = () => {
+    let limit = Number(queries.limit) || OFFSET_LIMIT;
+
+    if (limit < OFFSET_LIMIT) {
+      limit = OFFSET_LIMIT;
+    }
+
+    limit = limit + OFFSET_LIMIT;
+
+    if (typeof count === 'number' && Number(queries.limit) >= count) {
+      limit = Number(queries.limit);
+    }
+    const query = { name: 'limit', value: String(limit) };
+    dispatch(movieListAddQuery({ query }));
+    setQueries(query);
+    dispatch(movieListFetchStart());
+  };
 
   useEffect(() => {
-    dispatch(movieListFetchStart(Object.fromEntries(Array.from(searchParams))));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams.get('sort'), searchParams.get('categories'), dispatch]);
+    dispatch(movieListFetchStart());
+  }, [dispatch]);
 
   return (
     <>
@@ -92,7 +105,7 @@ export const MovieList = () => {
           <Preloader width={96} height={96} />
         </CenterContainer>
       )}
-      {!error && <MovieListControls />}
+      {!error && <MovieListControls queries={queries} />}
       {loading && !error && movies.length === 0 && (
         <MovieListSkeleton moviesCount={8} />
       )}
@@ -114,21 +127,24 @@ export const MovieList = () => {
           {movies.length === 0 && !loading && <h1>Nothing was found</h1>}
         </>
       )}
-      {movies.length >= 8 && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height={64}
-        >
-          {paginateLoading && <Preloader />}
-          {!paginateLoading && (
-            <Button sx={{ height: '42px' }} variant="contained">
+      {typeof count === 'number' &&
+        limit < count &&
+        movies.length >= OFFSET_LIMIT && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height={64}
+          >
+            <Button
+              sx={{ height: '42px' }}
+              variant="contained"
+              onClick={onClickShowMoreMovies}
+            >
               Show more
             </Button>
-          )}
-        </Box>
-      )}
+          </Box>
+        )}
       {error && !loading && <Error>{error}</Error>}
       <ModalCategoryCreate
         open={open && name === MODAL_NAME.CATEGORY_CREATE}

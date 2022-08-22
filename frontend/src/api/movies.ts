@@ -3,7 +3,10 @@ import client from './client';
 
 export const getMovies = async (queries?: MovieQueries) => {
   try {
-    return await client.get<never, Movie[]>('/movies', { params: queries });
+    return await client.get<never, { movies: Movie[]; allMoviesCount: number }>(
+      '/movies',
+      { params: queries }
+    );
   } catch (error) {
     return Promise.reject(error);
   }

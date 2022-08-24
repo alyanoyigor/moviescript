@@ -18,7 +18,6 @@ type FormProps<T> = {
   hookFormData: UseFormReturn<T>;
   onCancel: () => void;
   onSubmit: (data: T) => void;
-  options?: T;
   fetchLoading?: boolean;
 };
 
@@ -30,7 +29,6 @@ export const Form = <T,>(props: FormProps<T>) => {
     onSubmit,
     hookFormData,
     inputsInfo,
-    options,
   } = props;
 
   const {

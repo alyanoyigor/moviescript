@@ -127,15 +127,14 @@ export const MovieList = () => {
           {movies.length === 0 && !loading && <h1>Nothing was found</h1>}
         </>
       )}
-      {typeof count === 'number' &&
-        limit < count &&
-        movies.length >= OFFSET_LIMIT && (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height={64}
-          >
+      {movies.length >= OFFSET_LIMIT && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height={64}
+        >
+          {typeof count === 'number' && limit < count && (
             <Button
               sx={{ height: '42px' }}
               variant="contained"
@@ -143,8 +142,9 @@ export const MovieList = () => {
             >
               Show more
             </Button>
-          </Box>
-        )}
+          )}
+        </Box>
+      )}
       {error && !loading && <Error>{error}</Error>}
       <ModalCategoryCreate
         open={open && name === MODAL_NAME.CATEGORY_CREATE}

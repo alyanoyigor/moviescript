@@ -1,4 +1,4 @@
-import { Movie, MovieUserInput, MovieQueries } from '../types';
+import { Movie, MovieQueries } from '../types';
 import client from './client';
 
 export const getMovies = async (queries?: MovieQueries) => {
@@ -20,7 +20,21 @@ export const getMovie = async (id: string) => {
   }
 };
 
-export const createMovie = async (movie: MovieUserInput) => {
+export const updateMovie = async ({
+  id,
+  movie,
+}: {
+  id: string;
+  movie: Partial<Movie>;
+}) => {
+  try {
+    return await client.patch<never, Movie>(`/movies/${id}`, movie);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const createMovie = async (movie: Movie) => {
   try {
     return await client.post<never, Movie>(`/movies`, movie);
   } catch (error) {
@@ -30,7 +44,27 @@ export const createMovie = async (movie: MovieUserInput) => {
 
 export const createMovieImage = async (image: FormData) => {
   try {
-    return await client.post<never, { url: string }>('/movies/upload', image);
+    return await client.post<never, { url: string; id: string }>(
+      '/movies/upload',
+      image
+    );
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const updateMovieImage = async ({
+  id,
+  image,
+}: {
+  id: string;
+  image: FormData;
+}) => {
+  try {
+    return await client.patch<never, { url: string }>(
+      `/movies/${id}/upload`,
+      image
+    );
   } catch (error) {
     return Promise.reject(error);
   }

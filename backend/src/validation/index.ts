@@ -50,8 +50,8 @@ const movieObject = {
     .max(1000, 'Duration should be less than 1000'),
   grade: zod
     .number(createErrorObject('Grade', 'number'))
-    .min(1, 'Grade should be bigger than 1')
-    .max(12, 'Grade should be less than 12'),
+    .min(0.5, 'Grade should be bigger than 0.5')
+    .max(5, 'Grade should be less than 5'),
 };
 
 export const MovieUserInputSchema = zod.object(movieObject);

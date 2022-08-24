@@ -4,9 +4,12 @@ import { Service } from 'typedi';
 import modelMixin from '../mixins/model.mixin';
 import { CategoryInDatabase, CategoryUserInput } from '../types';
 
-export const categorySchema = new Schema<CategoryUserInput>({
-  name: { type: String, required: true },
-});
+export const categorySchema = new Schema<CategoryUserInput>(
+  {
+    name: { type: String, required: true },
+  },
+  { versionKey: false }
+);
 
 @Service()
 class CategoryModel extends modelMixin<CategoryUserInput>(

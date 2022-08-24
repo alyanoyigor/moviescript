@@ -1,4 +1,9 @@
-import { Button, Typography } from '@mui/material';
+import {
+  Button,
+  Typography,
+  TableRow,
+  styled as styledMUI,
+} from '@mui/material';
 import styled from 'styled-components';
 
 export const StyledImageWrapper = styled.div`
@@ -34,16 +39,13 @@ export const StyledContainer = styled.div`
 export const StyledMovieKey = styled(Typography).attrs({
   variant: 'body1',
   component: 'p',
-})`
-  font-weight: 500 !important;
-`;
+})``;
 
 export const StyledMovieValue = styled(Typography).attrs({
   variant: 'body1',
   component: 'p',
 })`
   color: ${(props) => props.theme.palette.grey[300]} !important;
-  font-size: 14px !important;
 `;
 
 export const StyledMovieTitle = styled(Typography).attrs({
@@ -74,3 +76,11 @@ export const StyledBackButton = styled(Button)`
   height: 42px;
   max-width: 110px;
 `;
+
+export const StyledTableRow = styledMUI(TableRow)(({ theme }) => ({
+  '& td, & th': {
+    border: 0,
+    padding: 8,
+    paddingLeft: 0,
+  },
+}));

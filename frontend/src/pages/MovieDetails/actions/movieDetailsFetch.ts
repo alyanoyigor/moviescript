@@ -1,14 +1,14 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { Movie } from '../../../types';
-import { MovieDetailsState } from '../reducers/movieDetails';
+import { MovieDetailsFetchState } from '../reducers/movieDetailsFetch';
 
-export const movieFetchInProgressAction = (state: MovieDetailsState) => {
+export const movieFetchInProgressAction = (state: MovieDetailsFetchState) => {
   state.loading = true;
   state.error = null;
 };
 
 export const movieFetchSuccessAction = (
-  state: MovieDetailsState,
+  state: MovieDetailsFetchState,
   action: PayloadAction<{ data: Movie }>
 ) => {
   const { data } = action.payload;
@@ -18,7 +18,7 @@ export const movieFetchSuccessAction = (
 };
 
 export const movieFetchErrorAction = (
-  state: MovieDetailsState,
+  state: MovieDetailsFetchState,
   action: PayloadAction<{ error: string }>
 ) => {
   const { error } = action.payload;

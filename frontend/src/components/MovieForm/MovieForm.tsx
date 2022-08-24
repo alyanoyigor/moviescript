@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Checkbox,
   InputLabel,
@@ -11,24 +11,22 @@ import {
   FormControl,
   Button,
   FormHelperText,
+  Rating,
+  Box,
 } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
+import { AnyObjectSchema } from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Input } from '../../../../components/Input';
-import { getTheme } from '../../../../styles/theme';
-import {
-  MovieUserInput,
-  MovieCategory,
-  MovieFormSchema,
-} from '../../../../types';
-import { movieCreateSchema } from '../../../../validation/movieCreateSchema';
-import { Preloader } from '../../../../components/Preloader';
-import { FormSkeleton } from '../../../../components/FormSkeleton';
+import { Input } from '../Input';
+import { getTheme } from '../../styles/theme';
+import { Movie, MovieCategory, MovieFormSchema } from '../../types';
+import { Preloader } from '../Preloader';
+import { FormSkeleton } from '../FormSkeleton';
 import { StyledButton, StyledForm, StyledButtonsContainer } from './styled';
 
 type MovieFormProps = {
@@ -36,9 +34,10 @@ type MovieFormProps = {
   onCancel: () => void;
   onSubmit: (data: MovieFormSchema) => void;
   categories: MovieCategory[];
+  schema: AnyObjectSchema;
   fetchCategoriesLoading: boolean;
-  options?: MovieUserInput;
   fetchLoading?: boolean;
+  defaultMovieProps?: Movie | Record<string, never>;
 };
 
 export const MovieForm = (props: MovieFormProps) => {
@@ -46,10 +45,27 @@ export const MovieForm = (props: MovieFormProps) => {
     loading,
     fetchLoading,
     fetchCategoriesLoading,
+    defaultMovieProps,
     categories,
     onCancel,
     onSubmit,
+    schema,
   } = props;
+
+  const defaultValues = useMemo(
+    () => ({
+      title: defaultMovieProps?.title,
+      description: defaultMovieProps?.description,
+      categories: defaultMovieProps?.categories?.map(
+        (category) => category.name
+      ),
+      duration: defaultMovieProps?.duration,
+      releaseDate: defaultMovieProps?.releaseDate,
+      grade: defaultMovieProps?.grade,
+      fetchCategories: categories,
+    }),
+    [categories, defaultMovieProps]
+  );
 
   const {
     register,
@@ -58,13 +74,16 @@ export const MovieForm = (props: MovieFormProps) => {
     watch,
     control,
     formState: { errors },
-  } = useForm<MovieFormSchema>({ resolver: yupResolver(movieCreateSchema) });
+  } = useForm<MovieFormSchema>({
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
 
-  useEffect(() => reset(), [reset]);
+  useEffect(() => reset(defaultValues), [defaultValues, reset]);
 
   return (
     <ThemeProvider theme={getTheme('light')}>
-      {fetchLoading && <FormSkeleton inputsCount={7} />}
+      {fetchLoading && <FormSkeleton inputsCount={8} />}
       {!fetchLoading && (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <Input<MovieFormSchema>
@@ -95,36 +114,31 @@ export const MovieForm = (props: MovieFormProps) => {
           <Controller
             name="grade"
             control={control}
-            render={({ field }) => {
-              const error = errors['grade']?.message;
-              return (
-                <TextField
-                  color="secondary"
-                  size="small"
-                  error={Boolean(error)}
-                  helperText={error}
-                  select
-                  label="Grade"
-                  SelectProps={{
-                    MenuProps: {
-                      sx: { maxHeight: '200px' },
-                    },
+            render={({ field }) => (
+              <FormControl>
+                <Box
+                  sx={{
+                    width: 200,
+                    ml: 2,
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
-                  onChange={field.onChange}
-                  value={field.value || ''}
                 >
-                  {Array.from(Array(13), (_, index) => {
-                    const value = index === 0 ? '' : index;
-                    const label = index === 0 ? 'Select grade' : index;
-                    return (
-                      <MenuItem key={label} value={value}>
-                        {label}
-                      </MenuItem>
-                    );
-                  })}
-                </TextField>
-              );
-            }}
+                  <Box sx={{ mr: 2, color: 'rgba(0, 0, 0, 0.6)' }}>Grade</Box>
+                  <Rating
+                    precision={0.5}
+                    size="large"
+                    value={Number(field.value)}
+                    onChange={field.onChange}
+                  />
+                </Box>
+                {errors['grade'] && (
+                  <FormHelperText sx={{ color: 'error.main' }}>
+                    {errors['grade']?.message}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            )}
           />
           <Controller
             name="categories"
@@ -150,9 +164,7 @@ export const MovieForm = (props: MovieFormProps) => {
                         },
                       },
                     }}
-                    renderValue={(selected: MovieCategory[]) =>
-                      selected.map((select) => select.name).join(', ')
-                    }
+                    renderValue={(selected: string[]) => selected.join(', ')}
                     onChange={field.onChange}
                     value={value}
                   >
@@ -162,16 +174,11 @@ export const MovieForm = (props: MovieFormProps) => {
                         <MenuItem
                           color="secondary"
                           key={category._id}
-                          value={category as any}
+                          value={category.name}
                         >
                           <Checkbox
                             color="secondary"
-                            checked={Boolean(
-                              value.find(
-                                (selectedCategory) =>
-                                  selectedCategory.name === category.name
-                              )
-                            )}
+                            checked={value.indexOf(category.name) > -1}
                           />
                           <ListItemText primary={category.name} />
                         </MenuItem>

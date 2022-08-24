@@ -15,7 +15,7 @@ class CategoryController extends BaseController {
     try {
       const validCategory = CategoryUserInputSchema.parse(request.body);
       const category = await this.categoryService.createCategory(validCategory);
-      return this.formateSuccessResponse(response, category);
+      return this.formatSuccessResponse(response, category);
     } catch (error) {
       this.handleError(response, error);
     }
@@ -23,7 +23,7 @@ class CategoryController extends BaseController {
   async getCategories(request: Request, response: Response) {
     try {
       const categories = await this.categoryService.getCategories();
-      return this.formateSuccessResponse(response, categories);
+      return this.formatSuccessResponse(response, categories);
     } catch (error) {
       this.handleError(response, error);
     }

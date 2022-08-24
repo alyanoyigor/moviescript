@@ -6,7 +6,7 @@ import {
 } from '../services/http.service';
 
 class BaseController {
-  formateSuccessResponse<T>(response: Response, data: T) {
+  formatSuccessResponse<T>(response: Response, data: T) {
     return formatSuccessResponse(response, data);
   }
 

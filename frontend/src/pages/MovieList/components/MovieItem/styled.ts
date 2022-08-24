@@ -2,6 +2,31 @@ import { CardContent, Card, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+export const StyledCard = styled(Card)`
+  height: 400px;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.5)
+    );
+  }
+`;
+
 export const StyledCardContainer = styled(Link)`
   width: 100%;
   margin: 0;
@@ -66,34 +91,14 @@ export const StyledCardContainer = styled(Link)`
   }
 `;
 
-export const StyledCard = styled(Card)`
-  background-position: center;
-  height: 400px;
-  background-image: url(${(props: { image: string }) => props.image}) !important;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    content: '';
-    background-image: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.9),
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.7)
-    );
-  }
+export const StyledImage = styled('img')`
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 export const StyledCardContent = styled(CardContent)`

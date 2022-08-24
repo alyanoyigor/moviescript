@@ -4,7 +4,7 @@ import { Movie } from '../../../types';
 
 const BOOK_ITEM_FETCH_START_PREFIX = 'BOOK_ITEM_FETCH_START';
 
-export const movieFetchStart = createAsyncThunk<
+export const movieDetailsFetchStart = createAsyncThunk<
   { data: Movie },
   { id: string }
 >(BOOK_ITEM_FETCH_START_PREFIX, async (data, { rejectWithValue }) => {

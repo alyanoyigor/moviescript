@@ -7,6 +7,7 @@ import { categorySchema } from './category.model';
 
 const movieSchema = new Schema<MovieInDatabase>(
   {
+    _id: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
     categories: { type: [categorySchema], default: [] },
@@ -16,7 +17,7 @@ const movieSchema = new Schema<MovieInDatabase>(
     imagePath: { type: String, required: true },
     deleted: { type: Boolean },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 @Service()

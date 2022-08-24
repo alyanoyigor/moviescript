@@ -25,12 +25,15 @@ export const movieListCreateMovieStart = createAsyncThunk<
     const file = movie.imagePath[0];
     const formData = new FormData();
     formData.append('file', file);
-
     const image = await createMovieImage(formData);
+
     const updatedMovie = {
       ...movie,
+      _id: image.id,
       imagePath: image.url,
-      duration: Number(movie.duration),
+      categories: movie.fetchCategories.filter((category) =>
+        movie.categories.includes(category.name)
+      ),
     };
 
     dispatch(movieCreateInProgress());

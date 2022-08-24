@@ -5,18 +5,15 @@ type ID = {
 export type MovieDefault = {
   title: string;
   description: string;
-  categories: MovieCategory[];
   duration: number;
   releaseDate: Date;
   grade: number;
 };
 
-export type MovieUserInput = MovieDefault & {
-  imagePath: string;
-};
-
 export type MovieFormSchema = MovieDefault & {
+  categories: string[];
   imagePath: FileList;
+  fetchCategories: MovieCategory[];
 };
 
 export type MovieCategoryUserInput = {
@@ -29,7 +26,7 @@ export type Movie = {
   title: string;
   description: string;
   categories: MovieCategory[];
-  releaseDate: string;
+  releaseDate: Date;
   imagePath: string;
   duration: number;
   grade: number;

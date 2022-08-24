@@ -3,6 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import {
   StyledCardContainer,
   StyledCard,
+  StyledImage,
   StyledCardContent,
   StyledTitle,
   StyledTextData,
@@ -10,7 +11,7 @@ import {
 
 type MovieItemProps = {
   title: string;
-  releaseDate: string;
+  releaseDate: Date;
   movieId: string;
   imagePath: string;
 };
@@ -21,7 +22,8 @@ export const MovieItem = (props: MovieItemProps) => {
 
   return (
     <StyledCardContainer to={`/movies/${movieId}`}>
-      <StyledCard image={imagePath}>
+      <StyledCard>
+        <StyledImage src={imagePath} alt={title} />
         <StyledCardContent>
           <Box width="100%" display="flex" justifyContent="center">
             <StyledTitle>{title}</StyledTitle>

@@ -4,7 +4,7 @@ import fsPromises from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 
 import MovieService from '../services/movie.service';
-import { MovieOptionalSchema, MovieUserInputSchema } from '../validation';
+import { MovieOptionalSchema, MovieDatabaseSchema } from '../validation';
 import BaseController from './base.controller';
 
 const { HOST } = process.env;
@@ -18,7 +18,7 @@ class MovieController extends BaseController {
   async getMovieList(request: Request, response: Response) {
     try {
       const movieList = await this.movieService.getMovieList(request.query);
-      return this.formateSuccessResponse(response, movieList);
+      return this.formatSuccessResponse(response, movieList);
     } catch (error) {
       this.handleError(response, error);
     }
@@ -27,7 +27,7 @@ class MovieController extends BaseController {
   async getMovie(request: Request, response: Response) {
     try {
       const movie = await this.movieService.getMovie(request.params.id);
-      return this.formateSuccessResponse(response, movie);
+      return this.formatSuccessResponse(response, movie);
     } catch (error) {
       this.handleError(response, error);
     }
@@ -35,9 +35,9 @@ class MovieController extends BaseController {
 
   async createMovie(request: Request, response: Response) {
     try {
-      const validMovie = MovieUserInputSchema.parse(request.body);
+      const validMovie = MovieDatabaseSchema.parse(request.body);
       const movie = await this.movieService.createMovie(validMovie);
-      return this.formateSuccessResponse(response, movie);
+      return this.formatSuccessResponse(response, movie);
     } catch (error) {
       this.handleError(response, error);
     }
@@ -50,7 +50,7 @@ class MovieController extends BaseController {
         validMovie,
         request.params.id
       );
-      return this.formateSuccessResponse(response, movie);
+      return this.formatSuccessResponse(response, movie);
     } catch (error) {
       this.handleError(response, error);
     }
@@ -61,7 +61,7 @@ class MovieController extends BaseController {
       const deletedResponse = await this.movieService.deleteMovie(
         request.params.id
       );
-      return this.formateSuccessResponse(response, deletedResponse);
+      return this.formatSuccessResponse(response, deletedResponse);
     } catch (error) {
       this.handleError(response, error);
     }
@@ -89,8 +89,32 @@ class MovieController extends BaseController {
           await file.mv(
             `${__dirname}/../public/movies/${dirName}/${file.name}`
           );
-          return this.formateSuccessResponse(response, {
+          return this.formatSuccessResponse(response, {
             url: `${HOST}/public/movies/${dirName}/${file.name}`,
+            id: dirName,
+          });
+        }
+      }
+      return this.formatErrorResponse(response, 'No file');
+    } catch (error) {
+      return this.formatErrorResponse(response, error);
+    }
+  }
+
+  async updateMovieImage(request: Request, response: Response) {
+    try {
+      if (request.files?.file) {
+        const file = request.files.file;
+        if (!Array.isArray(file)) {
+          const dirPath = `${__dirname}/../public/movies/${request.params.id}`;
+          const dirFiles = await fsPromises.readdir(dirPath);
+          const filesPromises = dirFiles.map((file) =>
+            fsPromises.unlink(`${dirPath}/${file}`)
+          );
+          await Promise.all(filesPromises);
+          await file.mv(`${dirPath}/${file.name}`);
+          return this.formatSuccessResponse(response, {
+            url: `${HOST}/public/movies/${request.params.id}/${file.name}`,
           });
         }
       }

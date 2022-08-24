@@ -2,10 +2,10 @@ import { Schema } from 'mongoose';
 import { Service } from 'typedi';
 
 import modelMixin from '../mixins/model.mixin';
-import { MovieUserInput, MovieInDatabase } from '../types';
+import { Movie } from '../types';
 import { categorySchema } from './category.model';
 
-const movieSchema = new Schema<MovieInDatabase>(
+const movieSchema = new Schema<Movie>(
   {
     _id: { type: String, required: true },
     title: { type: String, required: true },
@@ -21,18 +21,18 @@ const movieSchema = new Schema<MovieInDatabase>(
 );
 
 @Service()
-class MovieModel extends modelMixin<MovieInDatabase>('Movie', movieSchema) {
+class MovieModel extends modelMixin<Movie>('Movie', movieSchema) {
   get model() {
     return this.Model;
   }
 
-  async createMovie(data: MovieUserInput) {
+  async createMovie(data: Movie) {
     const movie = new this.Model(data);
     await movie.save();
     return movie;
   }
 
-  async findMovieByParam(param: Partial<MovieInDatabase>) {
+  async findMovieByParam(param: Partial<Movie>) {
     return await this.findByParam(param);
   }
 
@@ -48,13 +48,13 @@ class MovieModel extends modelMixin<MovieInDatabase>('Movie', movieSchema) {
     const movie = await this.findById(id);
     const deletedMovie = new this.Model(movie);
 
-    deletedMovie.set({ delete: true });
+    deletedMovie.set({ deleted: true });
     await deletedMovie.save();
 
     return 'Successfully deleted';
   }
 
-  async updateMovie(data: Partial<MovieUserInput>, id: string) {
+  async updateMovie(data: Partial<Movie>, id: string) {
     const movie = await this.findById(id);
     const updatedMovie = new this.Model(movie);
 

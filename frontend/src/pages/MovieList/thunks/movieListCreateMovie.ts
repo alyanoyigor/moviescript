@@ -38,9 +38,9 @@ export const movieListCreateMovieStart = createAsyncThunk<
 
     dispatch(movieCreateInProgress());
     await createMovie(updatedMovie);
-    dispatch(movieCreateSuccess());
-
     dispatch(modalClose());
+
+    dispatch(movieCreateSuccess());
     await dispatch(movieListFetchStart());
     toast.success('Movie created successfully!');
   } catch (error) {

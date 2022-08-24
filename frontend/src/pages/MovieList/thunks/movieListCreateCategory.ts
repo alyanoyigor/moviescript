@@ -25,9 +25,9 @@ export const movieListCreateCategoryStart = createAsyncThunk<
     dispatch(categoryCreateInProgress());
 
     await createCategory(category);
-    dispatch(categoryCreateSuccess());
-
     dispatch(modalClose());
+
+    dispatch(categoryCreateSuccess());
     await dispatch(movieListGetCategoriesStart());
     toast.success('Category created successfully!');
   } catch (error) {

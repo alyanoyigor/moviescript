@@ -1,12 +1,12 @@
 import { Service } from 'typedi';
 import MovieModel from '../models/movie.model';
-import { MovieUserInput, MoviesQuery, MovieUpdate } from '../types';
+import { Movie, MoviesQuery, MovieUpdate } from '../types';
 
 @Service()
 class MovieService {
   constructor(private movieModel: MovieModel) {}
 
-  async createMovie(data: MovieUserInput) {
+  async createMovie(data: Movie) {
     return await this.movieModel.createMovie(data);
   }
 

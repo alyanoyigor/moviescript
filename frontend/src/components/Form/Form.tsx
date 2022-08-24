@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider } from '@mui/material';
 import { Path, UseFormReturn } from 'react-hook-form';
 
-import { getTheme } from '../../styles/theme';
 import { Input } from '../Input';
 import { FormSkeleton } from '../FormSkeleton';
 import { StyledButton, StyledForm, StyledButtonsContainer } from './styled';
@@ -42,7 +40,7 @@ export const Form = <T,>(props: FormProps<T>) => {
   useEffect(() => reset(), [reset]);
 
   return (
-    <ThemeProvider theme={getTheme('light')}>
+    <>
       {fetchLoading && <FormSkeleton inputsCount={inputsInfo.length} />}
       {!fetchLoading && (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +81,7 @@ export const Form = <T,>(props: FormProps<T>) => {
           </StyledButtonsContainer>
         </StyledForm>
       )}
-    </ThemeProvider>
+    </>
   );
 };
 

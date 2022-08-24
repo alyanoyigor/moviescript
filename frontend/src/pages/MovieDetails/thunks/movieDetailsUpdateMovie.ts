@@ -51,9 +51,9 @@ export const movieDetailsUpdateMovieStart = createAsyncThunk<
 
     dispatch(movieUpdateInProgress());
     await updateMovie({ id, movie: updatedMovie });
-    dispatch(movieUpdateSuccess());
-
     dispatch(modalClose());
+
+    dispatch(movieUpdateSuccess());
     await dispatch(movieDetailsFetchStart({ id }));
     toast.success('Movie updated successfully!');
   } catch (error) {

@@ -9,16 +9,17 @@ export const StyledForm = styled.form`
   flex-direction: column;
 `;
 
-export const StyledButton = styledMui(LoadingButton)`
-  width: 100px;
-`;
-
 export const StyledSkeleton = styledMui(Skeleton)`
   transform: none;
 `;
 
+export const StyledButton = styledMui(LoadingButton)`
+  width: 100px;
+`;
+
 export const StyledButtonsContainer = styledMui(Box)`
   display: flex;
+  margin-top: auto;
   gap: 4px;
   justify-content: flex-end;
 `;

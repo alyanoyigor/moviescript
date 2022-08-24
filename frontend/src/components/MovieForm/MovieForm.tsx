@@ -7,7 +7,6 @@ import {
   OutlinedInput,
   Select,
   TextField,
-  ThemeProvider,
   FormControl,
   Button,
   FormHelperText,
@@ -23,7 +22,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Input } from '../Input';
-import { getTheme } from '../../styles/theme';
 import { Movie, MovieCategory, MovieFormSchema } from '../../types';
 import { Preloader } from '../Preloader';
 import { FormSkeleton } from '../FormSkeleton';
@@ -82,7 +80,7 @@ export const MovieForm = (props: MovieFormProps) => {
   useEffect(() => reset(defaultValues), [defaultValues, reset]);
 
   return (
-    <ThemeProvider theme={getTheme('light')}>
+    <>
       {fetchLoading && <FormSkeleton inputsCount={8} />}
       {!fetchLoading && (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -130,6 +128,7 @@ export const MovieForm = (props: MovieFormProps) => {
                     size="large"
                     value={Number(field.value)}
                     onChange={field.onChange}
+                    disabled={loading}
                   />
                 </Box>
                 {errors['grade'] && (
@@ -151,6 +150,7 @@ export const MovieForm = (props: MovieFormProps) => {
                   <InputLabel id="select-categories">Categories</InputLabel>
                   <Select
                     labelId="select-categories"
+                    disabled={loading}
                     color="secondary"
                     error={Boolean(error)}
                     multiple
@@ -202,6 +202,7 @@ export const MovieForm = (props: MovieFormProps) => {
                   <DesktopDatePicker
                     label="Release date"
                     inputFormat="MM/DD/YYYY"
+                    disabled={loading}
                     openTo="year"
                     views={['year', 'month', 'day']}
                     PopperProps={{
@@ -235,6 +236,7 @@ export const MovieForm = (props: MovieFormProps) => {
           <FormControl>
             <Button
               variant="contained"
+              disabled={loading}
               color={errors['imagePath'] ? 'error' : 'secondary'}
               component="label"
               startIcon={<ImageIcon />}
@@ -275,7 +277,7 @@ export const MovieForm = (props: MovieFormProps) => {
           </StyledButtonsContainer>
         </StyledForm>
       )}
-    </ThemeProvider>
+    </>
   );
 };
 

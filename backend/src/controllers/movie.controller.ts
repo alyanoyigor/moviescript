@@ -4,7 +4,7 @@ import fsPromises from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 
 import MovieService from '../services/movie.service';
-import { MovieOptionalSchema, MovieDatabaseSchema } from '../validation';
+import { MovieOptionalSchema, MovieSchema } from '../validation';
 import BaseController from './base.controller';
 
 const { HOST } = process.env;
@@ -35,7 +35,7 @@ class MovieController extends BaseController {
 
   async createMovie(request: Request, response: Response) {
     try {
-      const validMovie = MovieDatabaseSchema.parse(request.body);
+      const validMovie = MovieSchema.parse(request.body);
       const movie = await this.movieService.createMovie(validMovie);
       return this.formatSuccessResponse(response, movie);
     } catch (error) {
@@ -61,10 +61,16 @@ class MovieController extends BaseController {
       const deletedResponse = await this.movieService.deleteMovie(
         request.params.id
       );
+      await this.deleteMovieImage(request.params.id);
       return this.formatSuccessResponse(response, deletedResponse);
     } catch (error) {
       this.handleError(response, error);
     }
+  }
+
+  async deleteMovieImage(id: string) {
+    const dirPath = `${__dirname}/../public/movies/${id}`;
+    await fsPromises.rm(dirPath, { recursive: true });
   }
 
   async checkAndCreateDirectory(path: string) {

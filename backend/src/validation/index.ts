@@ -30,6 +30,7 @@ export const CategoryDatabaseSchema = zod.object({
 });
 
 const movieObject = {
+  _id: zod.string(),
   title: zod
     .string(createErrorObject('Title', 'string'))
     .max(250, 'Title should be less than 250 characters'),
@@ -52,15 +53,10 @@ const movieObject = {
     .number(createErrorObject('Grade', 'number'))
     .min(0.5, 'Grade should be bigger than 0.5')
     .max(5, 'Grade should be less than 5'),
+  deleted: zod.optional(zod.boolean()),
 };
 
-export const MovieUserInputSchema = zod.object(movieObject);
-
-export const MovieDatabaseSchema = zod.object({
-  ...movieObject,
-  _id: zod.string(),
-  deleted: zod.optional(zod.boolean()),
-});
+export const MovieSchema = zod.object(movieObject);
 
 export const MovieOptionalSchema = zod.object(
   createOptionalObject(movieObject)

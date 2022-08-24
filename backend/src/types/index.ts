@@ -1,18 +1,16 @@
 import { z as zod } from 'zod';
 import {
   CategoryUserInputSchema,
-  MovieUserInputSchema,
   CategoryDatabaseSchema,
-  MovieDatabaseSchema,
+  MovieSchema,
   CategoryOptionalSchema,
   MovieOptionalSchema,
 } from '../validation';
 
 export type CategoryUserInput = zod.infer<typeof CategoryUserInputSchema>;
-export type MovieUserInput = zod.infer<typeof MovieUserInputSchema>;
+export type Movie = zod.infer<typeof MovieSchema>;
 
 export type CategoryInDatabase = zod.infer<typeof CategoryDatabaseSchema>;
-export type MovieInDatabase = zod.infer<typeof MovieDatabaseSchema>;
 
 export type CategoryUpdate = zod.infer<typeof CategoryOptionalSchema>;
 export type MovieUpdate = zod.infer<typeof MovieOptionalSchema>;

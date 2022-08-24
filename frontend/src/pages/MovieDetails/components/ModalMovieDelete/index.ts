@@ -1,0 +1,1 @@
+export { ModalMovieDelete } from './ModalMovieDelete';

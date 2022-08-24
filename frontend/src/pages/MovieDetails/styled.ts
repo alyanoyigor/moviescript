@@ -30,6 +30,7 @@ export const StyledImage = styled.img`
 export const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: 10% 45% 45%;
+  margin-bottom: 32px;
 
   ${(props) => props.theme.breakpoints.down('md')} {
     grid-template-columns: 100%;
@@ -72,9 +73,28 @@ export const StyledMovieContent = styled.div`
   }
 `;
 
-export const StyledBackButton = styled(Button)`
-  height: 42px;
-  max-width: 110px;
+export const StyledButton = styledMUI(Button)`
+  height: 40px;
+  width: 100%;
+  max-width: 100px;
+`;
+
+export const StyledBackButton = styledMUI(StyledButton)`
+  margin-bottom: 32px;
+
+  ${(props) => props.theme.breakpoints.down('md')} {
+    margin: 0;
+    margin-right: 32px;
+  }
+`;
+
+export const StyledEditButton = styledMUI(StyledButton)`
+  margin-bottom: 8px;
+
+  ${(props) => props.theme.breakpoints.down('md')} {
+    margin: 0;
+    margin-right: 8px;
+  }
 `;
 
 export const StyledTableRow = styledMUI(TableRow)(({ theme }) => ({

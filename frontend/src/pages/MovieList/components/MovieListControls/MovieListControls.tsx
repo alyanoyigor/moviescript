@@ -12,13 +12,16 @@ import {
   Select,
   ListItemText,
   Input,
+  IconButton,
   SelectChangeEvent,
+  Tooltip,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import {
   AddToPhotos as AddToPhotosIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
+  Compare as CompareIcon,
   Add as AddIcon,
 } from '@mui/icons-material';
 import debounce from 'lodash.debounce';
@@ -34,12 +37,14 @@ import { movieListGetCategoriesSelector } from '../../selectors/movieListGetCate
 import { movieListGetCategoriesStart } from '../../thunks/movieListGetCategories';
 import { movieListFetchStart } from '../../thunks/movieListFetch';
 import { movieListBeforeCreateMovieStart } from '../../thunks/movieListCreateMovie';
+import { movieListCompareViewGetMoviesStart } from '../../thunks/movieListCompareView';
+import { setQueries } from '../../../../utils/setQueries';
+import { movieListCompareViewSelector } from '../../selectors/movieListCompareView';
 import { movieListAddQuery } from '../../reducers/movieListFetch';
 import { MovieQueries, SortMoviesOptions } from '../../../../types';
 import { MenuAdd } from './components/MenuAdd';
 import { CategoriesSkeleton } from './components/CategoriesSkeleton';
 import { StyledCheckbox, StyledMenuItem, sxSelectCategory } from './styled';
-import { setQueries } from '../../../../utils/setQueries';
 
 type MovieListControlsProps = {
   queries: MovieQueries;
@@ -123,6 +128,17 @@ export const MovieListControls = (props: MovieListControlsProps) => {
     debounceFn(query);
   };
 
+  const compareMovies = useSelector(movieListCompareViewSelector);
+
+  const handleOpenModalCompareView = useCallback(() => {
+    dispatch(modalOpen({ name: MODAL_NAME.MOVIE_COMPARE_VIEW }));
+    dispatch(
+      movieListCompareViewGetMoviesStart({
+        movieIdList: compareMovies,
+      })
+    );
+  }, [dispatch, compareMovies]);
+
   const handleChangeCategory = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;
     const categoryList = typeof value === 'string' ? value.split(',') : value;
@@ -149,6 +165,7 @@ export const MovieListControls = (props: MovieListControlsProps) => {
           id="openMenu"
           color="secondary"
           variant="contained"
+          sx={{ height: '100%' }}
           onClick={handleOpenMenuCategories}
           startIcon={<AddToPhotosIcon />}
         >
@@ -232,6 +249,22 @@ export const MovieListControls = (props: MovieListControlsProps) => {
       >
         Add
       </Button>
+      <Tooltip
+        title={
+          compareMovies.length <= 1
+            ? 'Add movies to compare them'
+            : 'Compare view'
+        }
+      >
+        <span>
+          <IconButton
+            disabled={compareMovies.length <= 1}
+            onClick={handleOpenModalCompareView}
+          >
+            <CompareIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
       <MenuAdd
         handleOpenModalCategoryCreate={handleOpenModalCategoryCreate}
         handleOpenModalMovieCreate={handleOpenModalMovieCreate}

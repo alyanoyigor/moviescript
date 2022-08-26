@@ -1,0 +1,1 @@
+export { ModalMovieCompareView } from './ModalMovieCompareView';

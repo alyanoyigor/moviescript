@@ -1,0 +1,1 @@
+export { ModalMovieCard } from './ModalMovieCard';

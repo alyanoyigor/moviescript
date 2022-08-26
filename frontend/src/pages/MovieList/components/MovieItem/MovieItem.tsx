@@ -1,5 +1,8 @@
-import BalanceIcon from '@mui/icons-material/Balance';
 import { Box, IconButton } from '@mui/material';
+import {
+  Check as CheckIcon,
+  Balance as BalanceIcon,
+} from '@mui/icons-material';
 import {
   StyledCardContainer,
   StyledCard,
@@ -14,10 +17,19 @@ type MovieItemProps = {
   releaseDate: Date;
   movieId: string;
   imagePath: string;
+  handleToggleCompareMovie: (id: string) => void;
+  compareMovieIds: string[];
 };
 
 export const MovieItem = (props: MovieItemProps) => {
-  const { title, releaseDate, movieId, imagePath } = props;
+  const {
+    title,
+    releaseDate,
+    movieId,
+    imagePath,
+    compareMovieIds,
+    handleToggleCompareMovie,
+  } = props;
   const releaseYear = new Date(releaseDate).getFullYear();
 
   return (
@@ -35,10 +47,14 @@ export const MovieItem = (props: MovieItemProps) => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('click');
+              handleToggleCompareMovie(movieId);
             }}
           >
-            <BalanceIcon />
+            {compareMovieIds.indexOf(movieId) > -1 ? (
+              <CheckIcon color="success" />
+            ) : (
+              <BalanceIcon />
+            )}
           </IconButton>
         </Box>
       </StyledCard>

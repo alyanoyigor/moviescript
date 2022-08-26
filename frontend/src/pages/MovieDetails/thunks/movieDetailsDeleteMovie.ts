@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { AppDispatch } from '../../../store';
 import { deleteMovie } from '../../../api/movies';
 import { modalClose } from '../../../store/modal/reducer/modal';
+import { movieListCompareViewRemoveMovie } from '../../MovieList/reducers/movieListCompareView';
 import {
   movieDeleteInProgress,
   movieDeleteError,
@@ -21,6 +22,7 @@ export const movieDetailsDeleteMovieStart = createAsyncThunk<
   try {
     dispatch(movieDeleteInProgress());
     await deleteMovie(id);
+    dispatch(movieListCompareViewRemoveMovie({ id }));
     dispatch(movieDeleteSuccess());
 
     dispatch(modalClose());

@@ -70,10 +70,10 @@ export const ModalMovieCompareView = (props: ModalMovieCompareViewProps) => {
           {!loading &&
             !error &&
             movies.map((movie) => (
-              <>
-                <ModalMovieCard key={movie._id} movie={movie} />
+              <React.Fragment key={movie._id}>
+                <ModalMovieCard movie={movie} />
                 {movies.at(-1)?._id !== movie._id && <Divider />}
-              </>
+              </React.Fragment>
             ))}
           {error && !loading && <Error>{error}</Error>}
         </>

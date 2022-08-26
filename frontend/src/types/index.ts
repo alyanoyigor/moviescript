@@ -38,10 +38,10 @@ export enum SortMoviesOptions {
 }
 
 export type MovieQueries = {
-  search?: string;
-  categories?: string;
-  limit?: string;
-  sort?: SortMoviesOptions;
+  search?: string | null;
+  categories?: string | null;
+  limit?: string | null;
+  sort?: SortMoviesOptions | null;
 };
 
 export enum Position {

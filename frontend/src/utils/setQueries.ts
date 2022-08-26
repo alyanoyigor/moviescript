@@ -3,9 +3,13 @@ export const setQueries = ({
   value,
 }: {
   name: string;
-  value: string;
+  value: string | null;
 }) => {
   const url = new URL(window.location.href);
-  url.searchParams.set(name, value);
+  if (value === null) {
+    url.searchParams.delete(name);
+  } else {
+    url.searchParams.set(name, value);
+  }
   window.history.pushState(null, '', url);
 };

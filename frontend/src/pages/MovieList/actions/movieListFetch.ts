@@ -33,7 +33,7 @@ export const movieListFetchErrorAction = (
 
 export const movieListAddQueryAction = (
   state: MovieListFetchState,
-  action: PayloadAction<{ query: { name: string; value: string } }>
+  action: PayloadAction<{ query: { name: string; value: string | null } }>
 ) => {
   const { query } = action.payload;
   state.queries = { ...state.queries, ...{ [query.name]: query.value } };

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { useAppDispatch } from '../../store';
@@ -7,6 +7,7 @@ import { modalClose } from '../../store/modal/reducer/modal';
 import { MODAL_NAME } from '../../store/modal/constants/modal';
 import { modalSelector } from '../../store/modal/selectors/modal';
 import { MovieCategoryUserInput, Position, MovieFormSchema } from '../../types';
+import NothingFoundMovies from '../../assets/nothing-found-movies.gif';
 
 import { Preloader } from '../../components/Preloader';
 import { Error } from '../../components/Error';
@@ -40,7 +41,7 @@ import { ModalCategoryCreate } from './components/ModalCategoryCreate';
 import { ModalMovieCreate } from './components/ModalMovieCreate';
 import { ModalMovieCompareView } from './components/ModalMovieCompareView';
 
-import { StyledListWrapper } from './styled';
+import { StyledListWrapper, StyledNothingFoundImage } from './styled';
 
 export const MovieList = () => {
   const {
@@ -163,7 +164,22 @@ export const MovieList = () => {
               ))}
             </StyledListWrapper>
           )}
-          {movies.length === 0 && !loading && <h1>Nothing was found</h1>}
+          {movies.length === 0 && !loading && (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography variant="h6" component="p">
+                Sorry we tried, but nothing was found
+              </Typography>
+              <StyledNothingFoundImage
+                src={NothingFoundMovies}
+                alt="Nothing was found"
+              />
+            </Box>
+          )}
         </>
       )}
       {movies.length >= OFFSET_LIMIT && (

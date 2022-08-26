@@ -3,6 +3,7 @@ import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { MovieList } from './pages/MovieList';
 import { MovieDetails } from './pages/MovieDetails';
+import { NotFound } from './pages/NotFound';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route index element={<MovieList />} />
           <Route path=":id" element={<MovieDetails />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

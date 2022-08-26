@@ -61,44 +61,19 @@ class MovieController extends BaseController {
       const deletedResponse = await this.movieService.deleteMovie(
         request.params.id
       );
-      await this.deleteMovieImage(request.params.id);
       return this.formatSuccessResponse(response, deletedResponse);
     } catch (error) {
       this.handleError(response, error);
     }
   }
 
-  async deleteMovieImage(id: string) {
-    const dirPath = `${__dirname}/../public/movies/${id}`;
-    await fsPromises.rm(dirPath, { recursive: true });
-  }
-
-  async checkAndCreateDirectory(path: string) {
-    try {
-      await fsPromises.access(path);
-    } catch (error) {
-      await fsPromises.mkdir(path);
-    }
-  }
-
-  async uploadMovieImage(request: Request, response: Response) {
+  async createMovieImage(request: Request, response: Response) {
     try {
       if (request.files?.file) {
         const file = request.files.file;
         if (!Array.isArray(file)) {
-          const dirName = uuidv4();
-
-          await this.checkAndCreateDirectory(`${__dirname}/../public`);
-          await this.checkAndCreateDirectory(`${__dirname}/../public/movies`);
-
-          await fsPromises.mkdir(`${__dirname}/../public/movies/${dirName}`);
-          await file.mv(
-            `${__dirname}/../public/movies/${dirName}/${file.name}`
-          );
-          return this.formatSuccessResponse(response, {
-            url: `${HOST}/public/movies/${dirName}/${file.name}`,
-            id: dirName,
-          });
+          const data = await this.movieService.createMovieImage(file);
+          return this.formatSuccessResponse(response, data);
         }
       }
       return this.formatErrorResponse(response, 'No file');
@@ -112,16 +87,11 @@ class MovieController extends BaseController {
       if (request.files?.file) {
         const file = request.files.file;
         if (!Array.isArray(file)) {
-          const dirPath = `${__dirname}/../public/movies/${request.params.id}`;
-          const dirFiles = await fsPromises.readdir(dirPath);
-          const filesPromises = dirFiles.map((file) =>
-            fsPromises.unlink(`${dirPath}/${file}`)
+          const data = await this.movieService.updateMovieImage(
+            file,
+            request.params.id
           );
-          await Promise.all(filesPromises);
-          await file.mv(`${dirPath}/${file.name}`);
-          return this.formatSuccessResponse(response, {
-            url: `${HOST}/public/movies/${request.params.id}/${file.name}`,
-          });
+          return this.formatSuccessResponse(response, data);
         }
       }
       return this.formatErrorResponse(response, 'No file');

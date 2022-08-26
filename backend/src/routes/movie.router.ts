@@ -17,7 +17,7 @@ movieRouter.patch(
 );
 movieRouter.post(
   '/upload',
-  movieController.uploadMovieImage.bind(movieController)
+  movieController.createMovieImage.bind(movieController)
 );
 
 movieRouter.delete('/:id', movieController.deleteMovie.bind(movieController));

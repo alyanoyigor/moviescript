@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Preloader } from '../../../../../../components/Preloader';
-import { Error } from '../../../../../../components/Error';
-import { CenterContainer } from '../../../../../../components/CenterContainer';
-import { MovieCategory } from '../../../../../../types';
+import { Preloader } from 'components/Preloader';
+import { Error } from 'components/Error';
+import { CenterContainer } from 'components/CenterContainer';
+import { MovieCategory } from 'types';
 import { Category } from '../Category';
 import { CategoriesSkeleton } from '../CategoriesSkeleton';
 import { StyledMenu } from './styled';

@@ -9,14 +9,14 @@ import {
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
-import { Error } from '../../components/Error';
-import { Preloader } from '../../components/Preloader';
-import { CenterContainer } from '../../components/CenterContainer';
-import { MovieFormSchema, Position } from '../../types';
-import { useAppDispatch } from '../../store';
-import { modalSelector } from '../../store/modal/selectors/modal';
-import { modalOpen, modalClose } from '../../store/modal/reducer/modal';
-import { MODAL_NAME } from '../../store/modal/constants/modal';
+import { Error } from 'components/Error';
+import { Preloader } from 'components/Preloader';
+import { CenterContainer } from 'components/CenterContainer';
+import { MovieFormSchema, Position } from 'types';
+import { useAppDispatch } from 'store';
+import { modalSelector } from 'store/modal/selectors/modal';
+import { modalOpen, modalClose } from 'store/modal/reducer/modal';
+import { MODAL_NAME } from 'store/modal/constants/modal';
 
 import {
   movieDetailsBeforeUpdateMovieStart,

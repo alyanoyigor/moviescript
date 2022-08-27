@@ -26,17 +26,17 @@ import {
 } from '@mui/icons-material';
 import debounce from 'lodash.debounce';
 
-import { Search } from '../../../../components/Search';
-import { Preloader } from '../../../../components/Preloader';
-import { CenterContainer } from '../../../../components/CenterContainer';
-import { Error } from '../../../../components/Error';
+import { Search } from 'components/Search';
+import { Preloader } from 'components/Preloader';
+import { CenterContainer } from 'components/CenterContainer';
+import { Error } from 'components/Error';
 
-import { useAppDispatch } from '../../../../store';
-import { modalOpen } from '../../../../store/modal/reducer/modal';
-import { MODAL_NAME } from '../../../../store/modal/constants/modal';
+import { useAppDispatch } from 'store';
+import { modalOpen } from 'store/modal/reducer/modal';
+import { MODAL_NAME } from 'store/modal/constants/modal';
+import { MovieQueries, SortMoviesOptions } from 'types';
+import { setQueries } from 'utils/setQueries';
 
-import { MovieQueries, SortMoviesOptions } from '../../../../types';
-import { setQueries } from '../../../../utils/setQueries';
 import { movieListGetCategoriesSelector } from '../../selectors/movieListGetCategories';
 import { movieListCompareViewSelector } from '../../selectors/movieListCompareView';
 

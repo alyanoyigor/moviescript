@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { movieDetailsFetchStart } from '../thunks/movieDetailsFetch';
 
-import { Movie } from '../../../types';
+import { Movie } from 'types';
 import * as actions from '../actions/movieDetailsFetch';
 
 export type MovieDetailsFetchState = {

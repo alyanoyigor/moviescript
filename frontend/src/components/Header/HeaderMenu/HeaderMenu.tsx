@@ -13,11 +13,13 @@ import { StyledNavLink, StyledButtons } from './styled';
 
 type HeaderMenuProps = {
   open: boolean;
+  token: string | null;
   handleCloseMenu: () => void;
+  handleClickLogout: () => void;
 };
 
 export const HeaderMenu = (props: HeaderMenuProps) => {
-  const { open, handleCloseMenu } = props;
+  const { open, handleCloseMenu, token, handleClickLogout } = props;
 
   return (
     <Drawer
@@ -46,16 +48,30 @@ export const HeaderMenu = (props: HeaderMenuProps) => {
           </StyledNavLink>
         </Box>
         <StyledButtons>
-          <StyledNavLink to="/login">
-            <Button sx={{ m: 1 }} variant="outlined" color="light">
-              Login
+          {token && (
+            <Button
+              onClick={handleClickLogout}
+              sx={{ m: 1 }}
+              variant="contained"
+              color="secondary"
+            >
+              Logout
             </Button>
-          </StyledNavLink>
-          <StyledNavLink to="/register">
-            <Button sx={{ m: 1 }} variant="contained">
-              Register
-            </Button>
-          </StyledNavLink>
+          )}
+          {!token && (
+            <>
+              <StyledNavLink to="/login">
+                <Button sx={{ m: 1 }} variant="outlined" color="light">
+                  Login
+                </Button>
+              </StyledNavLink>
+              <StyledNavLink to="/register">
+                <Button sx={{ m: 1 }} variant="contained">
+                  Register
+                </Button>
+              </StyledNavLink>
+            </>
+          )}
         </StyledButtons>
       </Box>
     </Drawer>

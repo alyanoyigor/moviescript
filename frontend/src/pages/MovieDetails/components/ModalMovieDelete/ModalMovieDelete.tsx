@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-import { Modal } from '../../../../components/Modal';
+import { Modal } from 'components/Modal';
 import { StyledButtonsContainer, StyledButton, StyledTitle } from './styled';
 
 type ModalMovieDeleteProps = {

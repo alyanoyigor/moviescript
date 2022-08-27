@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ListItemText } from '@mui/material';
-import { MovieCategory } from '../../../../../../types';
+import { MovieCategory } from 'types';
 import { StyledMenuItem, StyledCheckbox } from './styled';
 
 type CategoryProps = {

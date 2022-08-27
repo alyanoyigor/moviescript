@@ -1,11 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
-import { MovieFormSchema, MovieCategory } from '../../../types';
-import { AppDispatch } from '../../../store';
-import { createMovie, createMovieImage } from '../../../api/movies';
-import { getCategories } from '../../../api/categories';
-import { modalClose } from '../../../store/modal/reducer/modal';
+import { MovieFormSchema, MovieCategory } from 'types';
+import { AppDispatch } from 'store';
+import { createMovie, createMovieImage } from 'api/movies';
+import { getCategories } from 'api/categories';
+import { modalClose } from 'store/modal/reducer/modal';
+
 import {
   movieCreateInProgress,
   movieCreateError,

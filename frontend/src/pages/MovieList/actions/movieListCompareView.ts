@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { Movie } from '../../../types';
+import { Movie } from 'types';
 import { MovieListCompareViewState } from '../reducers/movieListCompareView';
 
 export const movieListCompareViewAddMovieAction = (

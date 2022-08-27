@@ -21,8 +21,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { Movie, MovieCategory, MovieFormSchema } from 'types';
 import { Input } from '../Input';
-import { Movie, MovieCategory, MovieFormSchema } from '../../types';
 import { FormSkeleton } from '../FormSkeleton';
 import {
   StyledButton,

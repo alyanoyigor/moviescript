@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import preloader from '../../assets/preloader.svg';
+import preloader from 'assets/svg/preloader.svg';
 
 type PreloaderProps = {
   width?: number;

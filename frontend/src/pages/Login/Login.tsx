@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 
-import { Input } from '../../components/Input';
-import { authLoadingSelector } from '../../store/auth/selectors/auth';
-import { loginSchema } from '../../validation/loginSchema';
-import { Login as LoginData } from '../../types';
-import { useAppDispatch } from '../../store';
-import { authLoginStart } from '../../store/auth/thunks/authLogin';
+import { Input } from 'components/Input';
+import { authLoadingSelector } from 'store/auth/selectors/auth';
+import { loginSchema } from 'validation/loginSchema';
+import { Login as LoginData } from 'types';
+import { useAppDispatch } from 'store';
+import { authLoginStart } from 'store/auth/thunks/authLogin';
 import { StyledContainer, StyledForm, StyledTitle } from './styled';
 
 export const Login = () => {

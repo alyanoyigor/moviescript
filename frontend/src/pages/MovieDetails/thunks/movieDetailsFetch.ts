@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getMovie } from '../../../api/movies';
-import { Movie } from '../../../types';
+import { getMovie } from 'api/movies';
+import { Movie } from 'types';
 
 const MOVIE_DETAILS_FETCH_START_PREFIX = 'MOVIE_DETAILS_FETCH_START';
 

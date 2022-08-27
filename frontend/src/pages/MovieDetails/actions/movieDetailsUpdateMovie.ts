@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { MovieCategory, Movie } from '../../../types';
+import { MovieCategory, Movie } from 'types';
 import { MovieDetailsUpdateMovieState } from '../reducers/movieDetailsUpdateMovie';
 
 export const movieUpdateInProgressAction = (

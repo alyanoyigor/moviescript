@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../../index';
+import { RootState } from 'store';
 
 export const modalStateSelector = (state: RootState) => state.modal;
 

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Movie } from '../../../types';
+import { Movie } from 'types';
 import * as actions from '../actions/movieListCompareView';
 import { movieListCompareViewGetMoviesStart } from '../thunks/movieListCompareView';
 

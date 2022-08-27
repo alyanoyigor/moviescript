@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-import { Modal } from '../../../../components/Modal';
-import { Movie, MovieCategory, MovieFormSchema } from '../../../../types';
-import { movieUpdateSchema } from '../../../../validation/movieUpdateSchema';
-import { MovieForm } from '../../../../components/MovieForm';
+import { Modal } from 'components/Modal';
+import { Movie, MovieCategory, MovieFormSchema } from 'types';
+import { movieUpdateSchema } from 'validation/movieUpdateSchema';
+import { MovieForm } from 'components/MovieForm';
 
 type ModalMovieUpdateProps = {
   open: boolean;

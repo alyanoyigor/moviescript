@@ -2,7 +2,7 @@ import { Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { GlobalStyles } from '../../styles/GlobalStyles';
+import { GlobalStyles } from 'styles/GlobalStyles';
 import { Header } from '../Header';
 
 type LayoutProps = {

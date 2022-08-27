@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { MovieCategory } from '../../../types';
+import { MovieCategory } from 'types';
 import * as actions from '../actions/movieListCreateMovie';
 import { movieListBeforeCreateMovieStart } from '../thunks/movieListCreateMovie';
 

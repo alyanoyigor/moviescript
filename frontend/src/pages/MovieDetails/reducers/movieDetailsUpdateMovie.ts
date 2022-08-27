@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { MovieCategory, Movie } from '../../../types';
+import { MovieCategory, Movie } from 'types';
 import * as actions from '../actions/movieDetailsUpdateMovie';
 import { movieDetailsBeforeUpdateMovieStart } from '../thunks/movieDetailsUpdateMovie';
 

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Position } from '../../types';
+import { Position } from 'types';
 import { StyledCenterContainer } from './styled';
 
 const defaultProps = {

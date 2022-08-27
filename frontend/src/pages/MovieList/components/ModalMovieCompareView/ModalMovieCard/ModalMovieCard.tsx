@@ -7,7 +7,7 @@ import {
   Timelapse as TimelapseIcon,
 } from '@mui/icons-material';
 
-import { Movie } from '../../../../../types';
+import { Movie } from 'types';
 import {
   StyledImage,
   StyledImageContainer,

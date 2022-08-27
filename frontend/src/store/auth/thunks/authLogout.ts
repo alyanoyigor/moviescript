@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { logout } from '../../../api/auth';
+import { logout } from 'api/auth';
 import { authActions } from '../reducer/auth';
 
 const AUTH_LOGOUT_PREFIX = 'AUTH_LOGOUT';
@@ -13,7 +13,7 @@ export const authLogoutStart = createAsyncThunk(
       await logout();
       dispatch(authActions.authLogoutSuccess());
 
-      toast.success('You logout successfully!');
+      toast.success('You logged out successfully!');
     } catch (error) {
       toast.error(error as string);
       dispatch(authActions.authLogoutError({ error: error as string }));

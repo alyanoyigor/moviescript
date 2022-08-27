@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 
-import { Movie } from '../../../../types';
-import { Error } from '../../../../components/Error';
+import { Movie } from 'types';
+import { Error } from 'components/Error';
 import { ModalMovieCard } from './ModalMovieCard';
 import { StyledListItem, StyledSkeleton } from './styled';
 

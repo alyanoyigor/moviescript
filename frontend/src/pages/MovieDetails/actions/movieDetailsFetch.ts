@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { Movie } from '../../../types';
+import { Movie } from 'types';
 import { MovieDetailsFetchState } from '../reducers/movieDetailsFetch';
 
 export const movieFetchInProgressAction = (state: MovieDetailsFetchState) => {

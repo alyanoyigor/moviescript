@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getMovie } from '../../../api/movies';
-import { Movie } from '../../../types';
+import { getMovie } from 'api/movies';
+import { Movie } from 'types';
 
 const MOVIE_LIST_COMPARE_VIEW_GET_MOVIES_PREFIX =
   'MOVIE_LIST_COMPARE_VIEW_GET_MOVIES';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
-import NotFoundGif from '../../assets/404.gif';
+import NotFoundGif from 'assets/gif/404.gif';
 import {
   StyledContainer,
   StyledContent,

@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Menu as MenuIcon } from '@mui/icons-material';
 
-import { useAppDispatch } from '../../store';
-import { authLogoutStart } from '../../store/auth/thunks/authLogout';
-import { MODAL_NAME } from '../../store/modal/constants/modal';
-import { modalClose, modalOpen } from '../../store/modal/reducer/modal';
-import { modalSelector } from '../../store/modal/selectors/modal';
+import { useAppDispatch } from 'store';
+import { authLogoutStart } from 'store/auth/thunks/authLogout';
+import { MODAL_NAME } from 'store/modal/constants/modal';
+import { modalClose, modalOpen } from 'store/modal/reducer/modal';
+import { modalSelector } from 'store/modal/selectors/modal';
+
 import { Logo } from '../Logo';
 import { HeaderMenu } from './HeaderMenu';
 import {
@@ -26,13 +27,12 @@ export const Header = (props: HeaderProps) => {
   const { token } = props;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { open, name } = useSelector(modalSelector);
 
   const onClickLogout = () => {
     dispatch(authLogoutStart());
     navigate('/');
   };
-
-  const { open, name } = useSelector(modalSelector);
 
   const handleCloseMenu = () => {
     dispatch(modalClose());
@@ -86,6 +86,8 @@ export const Header = (props: HeaderProps) => {
       <HeaderMenu
         open={open && name === MODAL_NAME.MENU_OPEN}
         handleCloseMenu={handleCloseMenu}
+        handleClickLogout={onClickLogout}
+        token={token}
       />
     </StyledHeaderWrapper>
   );

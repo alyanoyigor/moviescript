@@ -3,10 +3,10 @@ import { Typography } from '@mui/material';
 import { Path, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { categoryCreateSchema } from '../../../../validation/categoryCreateSchema';
-import { MovieCategoryUserInput } from '../../../../types';
-import { Modal } from '../../../../components/Modal';
-import { Form } from '../../../../components/Form';
+import { categoryCreateSchema } from 'validation/categoryCreateSchema';
+import { MovieCategoryUserInput } from 'types';
+import { Modal } from 'components/Modal';
+import { Form } from 'components/Form';
 
 type ModalCategoryCreateProps = {
   open: boolean;

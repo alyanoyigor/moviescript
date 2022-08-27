@@ -11,6 +11,8 @@ export const StyledForm = styled.form`
 
 export const StyledSkeleton = styledMui(Skeleton)`
   transform: none;
+  width: 100%;
+  height: 42px;
 `;
 
 export const StyledButton = styledMui(LoadingButton)`

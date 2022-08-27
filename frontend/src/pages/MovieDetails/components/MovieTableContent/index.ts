@@ -1,0 +1,1 @@
+export { MovieTableContent } from './MovieTableContent';

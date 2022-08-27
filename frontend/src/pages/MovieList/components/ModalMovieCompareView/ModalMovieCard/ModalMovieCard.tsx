@@ -6,6 +6,7 @@ import {
   Star as StarIcon,
   Timelapse as TimelapseIcon,
 } from '@mui/icons-material';
+
 import { Movie } from '../../../../../types';
 import {
   StyledImage,

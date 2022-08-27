@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Box, Rating, Table, TableBody, TableCell } from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   ArrowBack as ArrowBackIcon,
@@ -17,34 +17,33 @@ import { useAppDispatch } from '../../store';
 import { modalSelector } from '../../store/modal/selectors/modal';
 import { modalOpen, modalClose } from '../../store/modal/reducer/modal';
 import { MODAL_NAME } from '../../store/modal/constants/modal';
+
 import {
   movieDetailsBeforeUpdateMovieStart,
   movieDetailsUpdateMovieStart,
 } from './thunks/movieDetailsUpdateMovie';
 import { movieDetailsFetchStart } from './thunks/movieDetailsFetch';
 import { movieDetailsDeleteMovieStart } from './thunks/movieDetailsDeleteMovie';
-import { movieFetchSelector } from './selectors/movieDetailsFetch';
-import { ModalMovieUpdate } from './components/ModalMovieUpdate';
-import { ModalMovieDelete } from './components/ModalMovieDelete';
+
 import { movieDeleteSelector } from './selectors/movieDetailsDeleteMovie';
+import { movieFetchSelector } from './selectors/movieDetailsFetch';
 import {
   movieUpdateCategoriesSelector,
   movieUpdateFetchDataSelector,
   movieUpdateSelector,
 } from './selectors/movieDetailsUpdateMovie';
+import { movieDetailsResetData } from './reducers/movieDetailsFetch';
+
+import { ModalMovieUpdate } from './components/ModalMovieUpdate';
+import { ModalMovieDelete } from './components/ModalMovieDelete';
+import { MovieTableContent } from './components/MovieTableContent';
 import {
   StyledButton,
   StyledBackButton,
   StyledEditButton,
   StyledContainer,
-  StyledDescriptionTitle,
   StyledImage,
   StyledImageWrapper,
-  StyledMovieContent,
-  StyledMovieKey,
-  StyledMovieTitle,
-  StyledMovieValue,
-  StyledTableRow,
 } from './styled';
 
 export const MovieDetails = () => {
@@ -99,6 +98,10 @@ export const MovieDetails = () => {
     if (movieId) {
       dispatch(movieDetailsFetchStart({ id: movieId }));
     }
+
+    return () => {
+      dispatch(movieDetailsResetData());
+    };
   }, [dispatch, movieId]);
 
   return (
@@ -143,51 +146,14 @@ export const MovieDetails = () => {
             <StyledImageWrapper>
               <StyledImage src={movie.imagePath} alt="" />
             </StyledImageWrapper>
-            <StyledMovieContent>
-              <StyledMovieTitle>{movie.title}</StyledMovieTitle>
-              <Table sx={{ maxWidth: 600, marginBottom: '32px' }}>
-                <TableBody>
-                  <StyledTableRow>
-                    <TableCell>
-                      <StyledMovieKey>Release date:</StyledMovieKey>
-                    </TableCell>
-                    <TableCell>
-                      <StyledMovieValue>{date}</StyledMovieValue>
-                    </TableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <TableCell>
-                      <StyledMovieKey>Duration:</StyledMovieKey>
-                    </TableCell>
-                    <TableCell>
-                      <StyledMovieValue>{movie.duration} min.</StyledMovieValue>
-                    </TableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <TableCell>
-                      <StyledMovieKey>Grade:</StyledMovieKey>
-                    </TableCell>
-                    <TableCell>
-                      <Rating value={movie.grade} precision={0.5} readOnly />
-                    </TableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <TableCell>
-                      <StyledMovieKey>Categories:</StyledMovieKey>
-                    </TableCell>
-                    <TableCell>
-                      <StyledMovieValue>{categories}</StyledMovieValue>
-                    </TableCell>
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-              <Box>
-                <StyledDescriptionTitle>
-                  Film description:
-                </StyledDescriptionTitle>
-                <StyledMovieValue>{movie.description}</StyledMovieValue>
-              </Box>
-            </StyledMovieContent>
+            <MovieTableContent
+              date={date}
+              categories={categories}
+              title={movie.title}
+              duration={movie.duration}
+              grade={movie.grade}
+              description={movie.description}
+            />
           </>
         )}
       </StyledContainer>

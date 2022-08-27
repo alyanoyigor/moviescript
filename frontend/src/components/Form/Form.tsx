@@ -33,7 +33,6 @@ export const Form = <T,>(props: FormProps<T>) => {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = hookFormData;
 
@@ -50,7 +49,6 @@ export const Form = <T,>(props: FormProps<T>) => {
               <Input
                 key={name}
                 disabled={loading}
-                valueWatcher={watch(name)}
                 inputOptions={register(name)}
                 error={errors[name]?.message as string | undefined}
                 label={input.label}

@@ -49,6 +49,7 @@ const movieListFetchSlice = createSlice({
   },
 });
 
-export const { movieListAddQuery } = movieListFetchSlice.actions;
+export const { movieListAddQuery, movieListResetData } =
+  movieListFetchSlice.actions;
 
 export default movieListFetchSlice.reducer;

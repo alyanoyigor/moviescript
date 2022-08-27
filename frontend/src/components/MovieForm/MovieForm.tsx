@@ -23,9 +23,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Input } from '../Input';
 import { Movie, MovieCategory, MovieFormSchema } from '../../types';
-import { Preloader } from '../Preloader';
 import { FormSkeleton } from '../FormSkeleton';
-import { StyledButton, StyledForm, StyledButtonsContainer } from './styled';
+import {
+  StyledButton,
+  StyledForm,
+  StyledButtonsContainer,
+  StyledSkeleton,
+} from './styled';
 
 type MovieFormProps = {
   loading: boolean;
@@ -69,7 +73,6 @@ export const MovieForm = (props: MovieFormProps) => {
     register,
     handleSubmit,
     reset,
-    watch,
     control,
     formState: { errors },
   } = useForm<MovieFormSchema>({
@@ -84,27 +87,24 @@ export const MovieForm = (props: MovieFormProps) => {
       {fetchLoading && <FormSkeleton inputsCount={8} />}
       {!fetchLoading && (
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Input<MovieFormSchema>
+          <Input
             disabled={loading}
-            valueWatcher={watch('title')}
             inputOptions={register('title')}
             error={errors['title']?.message}
             label="Title"
           />
-          <Input<MovieFormSchema>
+          <Input
             multiline={true}
             rows={3}
             disabled={loading}
-            valueWatcher={watch('description')}
             inputOptions={register('description')}
             error={errors['description']?.message}
             label="Description"
           />
-          <Input<MovieFormSchema>
+          <Input
             disabled={loading}
             type="number"
             min={1}
-            valueWatcher={watch('duration')}
             inputOptions={register('duration')}
             error={errors['duration']?.message}
             label="Duration"
@@ -168,7 +168,12 @@ export const MovieForm = (props: MovieFormProps) => {
                     onChange={field.onChange}
                     value={value}
                   >
-                    {fetchCategoriesLoading && <Preloader />}
+                    {fetchCategoriesLoading &&
+                      Array.from(Array(3), (_, index) => (
+                        <MenuItem key={index}>
+                          <StyledSkeleton />
+                        </MenuItem>
+                      ))}
                     {!fetchCategoriesLoading &&
                       categories.map((category) => (
                         <MenuItem

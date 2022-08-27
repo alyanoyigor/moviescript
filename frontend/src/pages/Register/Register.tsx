@@ -17,7 +17,6 @@ export const Register = () => {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm<RegisterData>({ resolver: yupResolver(loginSchema) });
   const dispatch = useAppDispatch();
@@ -35,27 +34,24 @@ export const Register = () => {
         Register
       </StyledTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <Input<RegisterData>
+        <Input
           disabled={loading}
           size="medium"
-          valueWatcher={watch('name')}
           inputOptions={register('name')}
           error={errors['name']?.message}
           label="Name"
         />
-        <Input<RegisterData>
+        <Input
           disabled={loading}
           size="medium"
-          valueWatcher={watch('email')}
           inputOptions={register('email')}
           error={errors['email']?.message}
           label="Email"
         />
-        <Input<RegisterData>
+        <Input
           disabled={loading}
           type="password"
           size="medium"
-          valueWatcher={watch('password')}
           inputOptions={register('password')}
           error={errors['password']?.message}
           label="Password"

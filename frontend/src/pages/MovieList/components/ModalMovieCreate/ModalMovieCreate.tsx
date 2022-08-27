@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-import { Modal } from '../../../../components/Modal';
 import { MovieCategory, MovieFormSchema } from '../../../../types';
-import { MovieForm } from '../../../../components/MovieForm';
 import { movieCreateSchema } from '../../../../validation/movieCreateSchema';
+import { Modal } from '../../../../components/Modal';
+import { MovieForm } from '../../../../components/MovieForm';
 
 type ModalMovieCreateProps = {
   open: boolean;
@@ -26,7 +26,7 @@ export const ModalMovieCreate = (props: ModalMovieCreateProps) => {
   } = props;
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal maxHeight={600} open={open} onClose={handleClose}>
       <Typography mb={1} textAlign="center" variant="h5" component="h1">
         Create movie
       </Typography>

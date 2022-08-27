@@ -27,21 +27,25 @@ import {
 import debounce from 'lodash.debounce';
 
 import { Search } from '../../../../components/Search';
-import { CenterContainer } from '../../../../components/CenterContainer';
 import { Preloader } from '../../../../components/Preloader';
+import { CenterContainer } from '../../../../components/CenterContainer';
 import { Error } from '../../../../components/Error';
+
 import { useAppDispatch } from '../../../../store';
 import { modalOpen } from '../../../../store/modal/reducer/modal';
 import { MODAL_NAME } from '../../../../store/modal/constants/modal';
+
+import { MovieQueries, SortMoviesOptions } from '../../../../types';
+import { setQueries } from '../../../../utils/setQueries';
 import { movieListGetCategoriesSelector } from '../../selectors/movieListGetCategories';
+import { movieListCompareViewSelector } from '../../selectors/movieListCompareView';
+
 import { movieListGetCategoriesStart } from '../../thunks/movieListGetCategories';
 import { movieListFetchStart } from '../../thunks/movieListFetch';
 import { movieListBeforeCreateMovieStart } from '../../thunks/movieListCreateMovie';
 import { movieListCompareViewGetMoviesStart } from '../../thunks/movieListCompareView';
-import { setQueries } from '../../../../utils/setQueries';
-import { movieListCompareViewSelector } from '../../selectors/movieListCompareView';
 import { movieListAddQuery } from '../../reducers/movieListFetch';
-import { MovieQueries, SortMoviesOptions } from '../../../../types';
+
 import { MenuAdd } from './components/MenuAdd';
 import { CategoriesSkeleton } from './components/CategoriesSkeleton';
 import { StyledCheckbox, StyledMenuItem, sxSelectCategory } from './styled';

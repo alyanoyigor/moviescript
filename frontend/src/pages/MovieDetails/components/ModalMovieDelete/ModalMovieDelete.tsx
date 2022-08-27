@@ -16,7 +16,7 @@ export const ModalMovieDelete = (props: ModalMovieDeleteProps) => {
   const { open, handleClose, loading, handleDeleteMovie, title } = props;
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal maxHeight={250} open={open} onClose={handleClose}>
       <Typography mb={1} textAlign="center" variant="h5" component="h1">
         Delete movie
       </Typography>

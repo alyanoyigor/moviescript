@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField } from '@mui/material';
-import { Path, PathValue, RefCallBack } from 'react-hook-form';
+import { RefCallBack } from 'react-hook-form';
 
 const defaultProps = {
   error: '',
@@ -10,7 +10,7 @@ const defaultProps = {
   multiline: false,
 };
 
-type InputProps<T> = {
+type InputProps = {
   inputOptions: {
     name: string;
     onChange: (value: any) => void;
@@ -18,7 +18,6 @@ type InputProps<T> = {
     ref: RefCallBack;
   };
   label: string;
-  valueWatcher?: PathValue<T, Path<T>>;
   disabled?: boolean;
   min?: number;
   size?: 'small' | 'medium';
@@ -28,14 +27,13 @@ type InputProps<T> = {
   rows?: number;
 } & typeof defaultProps;
 
-export const Input = <T,>(props: InputProps<T>) => {
+export const Input = (props: InputProps) => {
   const {
     error,
     inputOptions,
     label,
     type,
     disabled,
-    valueWatcher,
     multiline,
     rows,
     min,
@@ -60,7 +58,6 @@ export const Input = <T,>(props: InputProps<T>) => {
       error={Boolean(error)}
       helperText={error}
       variant="outlined"
-      InputLabelProps={{ shrink: Boolean(valueWatcher) }}
       {...inputOptions}
     />
   );

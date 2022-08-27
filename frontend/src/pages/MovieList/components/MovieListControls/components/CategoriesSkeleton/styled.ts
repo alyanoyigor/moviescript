@@ -1,11 +1,11 @@
-import { Skeleton, styled } from '@mui/material';
+import { Skeleton, styled, MenuItem } from '@mui/material';
 
 export const StyledCategorySkeleton = styled(Skeleton)(() => ({
-  height: 40,
-  marginBottom: 5,
+  height: '100%',
+  width: '100%',
   transform: 'none',
+}));
 
-  '&:last-child': {
-    marginBottom: 0,
-  },
+export const StyledMenuItem = styled(MenuItem)(() => ({
+  height: 45,
 }));

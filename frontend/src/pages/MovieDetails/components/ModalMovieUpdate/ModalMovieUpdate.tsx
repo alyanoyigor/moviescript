@@ -30,7 +30,7 @@ export const ModalMovieUpdate = (props: ModalMovieUpdateProps) => {
   } = props;
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal maxHeight={600} open={open} onClose={handleClose}>
       <Typography mb={1} textAlign="center" variant="h5" component="h1">
         Update movie
       </Typography>

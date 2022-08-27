@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledCategorySkeleton } from './styled';
+import { StyledCategorySkeleton, StyledMenuItem } from './styled';
 
 type CategoriesSkeletonProps = {
   categoriesCount: number;
@@ -11,7 +11,9 @@ export const CategoriesSkeleton = (props: CategoriesSkeletonProps) => {
   return (
     <>
       {Array.from(Array(categoriesCount), (_, index) => (
-        <StyledCategorySkeleton key={index} />
+        <StyledMenuItem>
+          <StyledCategorySkeleton key={index} />
+        </StyledMenuItem>
       ))}
     </>
   );

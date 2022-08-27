@@ -1,10 +1,16 @@
 import fileUpload from 'express-fileupload';
 import fsPromises from 'fs/promises';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Service } from 'typedi';
 import { v4 as uuidv4 } from 'uuid';
 import MovieModel from '../models/movie.model';
-import { Movie, MoviesQuery, MovieUpdate, User } from '../types';
+import {
+  MovieUserInput,
+  Movie,
+  MoviesQuery,
+  MovieUpdate,
+  User,
+} from '../types';
 
 const { HOST } = process.env;
 
@@ -12,20 +18,25 @@ const { HOST } = process.env;
 class MovieService {
   constructor(private movieModel: MovieModel) {}
 
-  async createMovie(data: Movie, user: Document<unknown, any, User> & User) {
-    const movie = await this.movieModel.createMovie(data);
-    user.movies = [...user.movies, movie];
-    await user.save();
-    return movie;
+  async createMovie(
+    data: MovieUserInput,
+    user: Document<unknown, any, User> & User
+  ) {
+    return await this.movieModel.createMovie({ ...data, userId: user._id });
+  }
+
+  async getAllNotDeletedMovies(userId: Types.ObjectId) {
+    return await this.movieModel.model.find({
+      deleted: { $ne: true },
+      userId,
+    });
   }
 
   async getMovieList(
     query: MoviesQuery,
     user: Document<unknown, any, User> & User
   ) {
-    const allMovies = await user.get('movies').find({
-      deleted: { $ne: true },
-    });
+    const allMovies = await this.getAllNotDeletedMovies(user._id);
 
     let limit;
     if (Number(query.limit) <= 8) {
@@ -34,9 +45,8 @@ class MovieService {
       limit = Number(query.limit) || 8;
     }
 
-    const moviesModel = await user
-      .get('movies')
-      .find({ deleted: { $ne: true } })
+    const moviesModel = this.movieModel.model
+      .find({ deleted: { $ne: true }, userId: user._id })
       .limit(limit);
 
     if (query.search) {
@@ -57,8 +67,8 @@ class MovieService {
     return { movies, allMoviesCount: allMovies.length };
   }
 
-  async getMovie(id: string) {
-    const movie = await this.movieModel.getMovie(id);
+  async getMovie(id: string, userId: Types.ObjectId) {
+    const movie = await this.movieModel.getMovie(id, userId);
 
     if (!movie) {
       throw new Error('Invalid id');
@@ -71,18 +81,22 @@ class MovieService {
     return movie;
   }
 
-  async updateMovie(data: Partial<MovieUpdate>, id: string) {
-    return await this.movieModel.updateMovie(data, id);
+  async updateMovie(data: {
+    movie: Partial<MovieUpdate>;
+    id: string;
+    userId: Types.ObjectId;
+  }) {
+    return await this.movieModel.updateMovie(data);
   }
 
-  async deleteMovieImage(id: string) {
-    const dirPath = `${__dirname}/../public/movies/${id}`;
+  async deleteMovieImage(id: string, userId: Types.ObjectId) {
+    const dirPath = `${__dirname}/../public/movies/${userId}/${id}`;
     await fsPromises.rm(dirPath, { recursive: true });
   }
 
-  async deleteMovie(id: string) {
-    await this.deleteMovieImage(id);
-    return await this.movieModel.deleteMovie(id);
+  async deleteMovie(id: string, userId: Types.ObjectId) {
+    await this.deleteMovieImage(id, userId);
+    return await this.movieModel.deleteMovie(id, userId);
   }
 
   async checkCreateDirectory(path: string) {
@@ -93,29 +107,42 @@ class MovieService {
     }
   }
 
-  async createMovieImage(file: fileUpload.UploadedFile) {
+  async createMovieImage(
+    file: fileUpload.UploadedFile,
+    userId: Types.ObjectId
+  ) {
     const dirName = uuidv4();
 
     await this.checkCreateDirectory(`${__dirname}/../public`);
     await this.checkCreateDirectory(`${__dirname}/../public/movies`);
+    await this.checkCreateDirectory(`${__dirname}/../public/movies/${userId}`);
 
-    await fsPromises.mkdir(`${__dirname}/../public/movies/${dirName}`);
-    await file.mv(`${__dirname}/../public/movies/${dirName}/${file.name}`);
+    await fsPromises.mkdir(
+      `${__dirname}/../public/movies/${userId}/${dirName}`
+    );
+    await file.mv(
+      `${__dirname}/../public/movies/${userId}/${dirName}/${file.name}`
+    );
     return {
-      url: `${HOST}/public/movies/${dirName}/${file.name}`,
+      url: `${HOST}/public/movies/${userId}/${dirName}/${file.name}`,
       id: dirName,
     };
   }
 
-  async updateMovieImage(file: fileUpload.UploadedFile, id: string) {
-    const dirPath = `${__dirname}/../public/movies/${id}`;
+  async updateMovieImage(data: {
+    file: fileUpload.UploadedFile;
+    id: string;
+    userId: Types.ObjectId;
+  }) {
+    const { file, userId, id } = data;
+    const dirPath = `${__dirname}/../public/movies/${userId}/${id}`;
     const dirFiles = await fsPromises.readdir(dirPath);
     const filesPromises = dirFiles.map((fileName) =>
       fsPromises.unlink(`${dirPath}/${fileName}`)
     );
     await Promise.all(filesPromises);
     await file.mv(`${dirPath}/${file.name}`);
-    return { url: `${HOST}/public/movies/${id}/${file.name}` };
+    return { url: `${HOST}/public/movies/${userId}/${id}/${file.name}` };
   }
 }
 

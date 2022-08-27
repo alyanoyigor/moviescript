@@ -21,14 +21,17 @@ export const movieListCompareViewAddMovieAction = (
 
 export const movieListCompareViewRemoveMovieAction = (
   state: MovieListCompareViewState,
-  action: PayloadAction<{ id: string }>
+  action: PayloadAction<{ id: string; showToast?: boolean }>
 ) => {
-  const { id } = action.payload;
+  const { id, showToast = true } = action.payload;
 
   state.compareMovieIds = state.compareMovieIds.filter(
     (compareMovie) => compareMovie !== id
   );
-  toast.success('Movie deleted from compare view successfully!');
+
+  if (showToast) {
+    toast.success('Movie deleted from compare view successfully!');
+  }
 };
 
 export const movieListCompareViewGetMoviesInProgressAction = (

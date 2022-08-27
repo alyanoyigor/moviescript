@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { authLogoutStart } from '../../store/auth/thunks/authLogout';
 import { Logo } from '../Logo';
@@ -11,9 +12,11 @@ type HeaderProps = {
 export const Header = (props: HeaderProps) => {
   const { token } = props;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onClickLogout = () => {
     dispatch(authLogoutStart());
+    navigate('/');
   };
 
   return (

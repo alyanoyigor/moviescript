@@ -22,7 +22,7 @@ export const movieDetailsDeleteMovieStart = createAsyncThunk<
   try {
     dispatch(movieDeleteInProgress());
     await deleteMovie(id);
-    dispatch(movieListCompareViewRemoveMovie({ id }));
+    dispatch(movieListCompareViewRemoveMovie({ id, showToast: false }));
     dispatch(movieDeleteSuccess());
 
     dispatch(modalClose());

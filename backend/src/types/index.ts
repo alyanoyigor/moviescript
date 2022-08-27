@@ -10,14 +10,15 @@ import {
   UserRegisterSchema,
 } from '../validation';
 
-type ID = {
-  _id: Types.ObjectId;
+type UserId = {
+  userId: Types.ObjectId;
 };
 
 export type CategoryUserInput = zod.infer<typeof CategoryUserInputSchema>;
-export type Movie = zod.infer<typeof MovieSchema>;
+export type Movie = zod.infer<typeof MovieSchema> & UserId;
+export type MovieUserInput = zod.infer<typeof MovieSchema>;
 
-export type CategoryInDatabase = CategoryUserInput & ID;
+export type CategoryInDatabase = CategoryUserInput & UserId;
 
 export type CategoryUpdate = zod.infer<typeof CategoryOptionalSchema>;
 export type MovieUpdate = zod.infer<typeof MovieOptionalSchema>;
@@ -38,15 +39,13 @@ export type MoviesQuery = {
 };
 
 export type User = {
-  _id?: string;
+  _id: Types.ObjectId;
   email: string;
   name: string;
   password: string;
-  movies: Movie[];
-  categories: CategoryInDatabase[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  token?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  token: string;
 };
 
 export type Context = {

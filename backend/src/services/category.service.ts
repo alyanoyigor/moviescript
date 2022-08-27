@@ -11,22 +11,22 @@ class CategoryService {
     data: CategoryUserInput,
     user: Document<unknown, any, User> & User
   ) {
-    const checkCategory = user.categories.find(
-      (category) => category.name === data.name
-    );
-    if (checkCategory) {
+    const foundCategory = await this.categoryModel.findByParam({
+      name: data.name,
+      userId: user._id,
+    });
+    if (foundCategory) {
       throw new Error(`Category with name '${data.name}' already exist`);
     }
 
-    const category = await this.categoryModel.createCategory(data);
-    user.categories = [...user.categories, category];
-    await user.save();
-
-    return category;
+    return await this.categoryModel.createCategory({
+      ...data,
+      userId: user._id,
+    });
   }
 
   async getCategories(user: Document<unknown, any, User> & User) {
-    return await user.get('categories');
+    return await this.categoryModel.model.find({ userId: user._id });
   }
 }
 

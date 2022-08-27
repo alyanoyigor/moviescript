@@ -1,13 +1,9 @@
 import { Request, Response } from 'express';
 import { Service } from 'typedi';
-import fsPromises from 'fs/promises';
-import { v4 as uuidv4 } from 'uuid';
 
 import MovieService from '../services/movie.service';
 import { MovieOptionalSchema, MovieSchema } from '../validation';
 import BaseController from './base.controller';
-
-const { HOST } = process.env;
 
 @Service()
 class MovieController extends BaseController {
@@ -25,15 +21,19 @@ class MovieController extends BaseController {
         return this.formatSuccessResponse(response, movieList);
       }
     } catch (error) {
-      console.log(error);
       this.handleError(response, error);
     }
   }
 
   async getMovie(request: Request, response: Response) {
     try {
-      const movie = await this.movieService.getMovie(request.params.id);
-      return this.formatSuccessResponse(response, movie);
+      if (request.context && request.context.user) {
+        const movie = await this.movieService.getMovie(
+          request.params.id,
+          request.context.user._id
+        );
+        return this.formatSuccessResponse(response, movie);
+      }
     } catch (error) {
       this.handleError(response, error);
     }
@@ -57,11 +57,14 @@ class MovieController extends BaseController {
   async updateMovie(request: Request, response: Response) {
     try {
       const validMovie = MovieOptionalSchema.parse(request.body);
-      const movie = await this.movieService.updateMovie(
-        validMovie,
-        request.params.id
-      );
-      return this.formatSuccessResponse(response, movie);
+      if (request.context && request.context.user) {
+        const movie = await this.movieService.updateMovie({
+          movie: validMovie,
+          id: request.params.id,
+          userId: request.context.user._id,
+        });
+        return this.formatSuccessResponse(response, movie);
+      }
     } catch (error) {
       this.handleError(response, error);
     }
@@ -69,10 +72,13 @@ class MovieController extends BaseController {
 
   async deleteMovie(request: Request, response: Response) {
     try {
-      const deletedResponse = await this.movieService.deleteMovie(
-        request.params.id
-      );
-      return this.formatSuccessResponse(response, deletedResponse);
+      if (request.context && request.context.user) {
+        const deletedResponse = await this.movieService.deleteMovie(
+          request.params.id,
+          request.context.user._id
+        );
+        return this.formatSuccessResponse(response, deletedResponse);
+      }
     } catch (error) {
       this.handleError(response, error);
     }
@@ -80,10 +86,13 @@ class MovieController extends BaseController {
 
   async createMovieImage(request: Request, response: Response) {
     try {
-      if (request.files?.file) {
+      if (request.files?.file && request.context && request.context.user) {
         const file = request.files.file;
         if (!Array.isArray(file)) {
-          const data = await this.movieService.createMovieImage(file);
+          const data = await this.movieService.createMovieImage(
+            file,
+            request.context.user._id
+          );
           return this.formatSuccessResponse(response, data);
         }
       }
@@ -95,13 +104,14 @@ class MovieController extends BaseController {
 
   async updateMovieImage(request: Request, response: Response) {
     try {
-      if (request.files?.file) {
+      if (request.files?.file && request.context && request.context.user) {
         const file = request.files.file;
         if (!Array.isArray(file)) {
-          const data = await this.movieService.updateMovieImage(
+          const data = await this.movieService.updateMovieImage({
             file,
-            request.params.id
-          );
+            id: request.params.id,
+            userId: request.context.user._id,
+          });
           return this.formatSuccessResponse(response, data);
         }
       }

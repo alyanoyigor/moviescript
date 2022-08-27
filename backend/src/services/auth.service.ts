@@ -43,8 +43,6 @@ class AuthService {
       name: params.name,
       email: params.email,
       password: hashedPassword,
-      movies: [],
-      categories: [],
     });
   }
 

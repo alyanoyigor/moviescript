@@ -17,6 +17,7 @@ export const CategoryOptionalSchema = CategoryUserInputSchema.partial();
 export const CategoryDatabaseSchema = zod.object({
   ...categoryObject,
   _id: zod.string(),
+  userId: zod.string(),
 });
 
 const movieObject = {

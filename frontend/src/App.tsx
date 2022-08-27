@@ -42,7 +42,6 @@ function App() {
             element={token ? <MovieDetails /> : <Navigate to="/login" />}
           />
         </Route>
-        <Route path="*" element={<NotFound />} />
         <Route
           path="/login"
           element={token ? <Navigate to="/movies" /> : <Login />}
@@ -51,6 +50,7 @@ function App() {
           path="/register"
           element={token ? <Navigate to="/movies" /> : <Register />}
         />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

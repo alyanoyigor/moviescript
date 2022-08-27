@@ -2,6 +2,10 @@ type ID = {
   _id: string;
 };
 
+type UserId = {
+  userId: string;
+};
+
 export type MovieDefault = {
   title: string;
   description: string;
@@ -20,7 +24,7 @@ export type MovieCategoryUserInput = {
   name: string;
 };
 
-export type MovieCategory = MovieCategoryUserInput & ID;
+export type MovieCategory = MovieCategoryUserInput & ID & UserId;
 
 export type Movie = {
   title: string;

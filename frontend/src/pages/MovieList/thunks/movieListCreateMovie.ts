@@ -28,12 +28,16 @@ export const movieListCreateMovieStart = createAsyncThunk<
     const image = await createMovieImage(formData);
 
     const updatedMovie = {
-      ...movie,
       _id: image.id,
       imagePath: image.url,
       categories: movie.fetchCategories.filter((category) =>
         movie.categories.includes(category.name)
       ),
+      title: movie.title,
+      description: movie.description,
+      duration: movie.duration,
+      releaseDate: movie.releaseDate,
+      grade: movie.grade,
     };
 
     dispatch(movieCreateInProgress());

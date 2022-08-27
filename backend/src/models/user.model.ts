@@ -4,16 +4,12 @@ import bcrypt from 'bcrypt';
 
 import modelMixin from '../mixins/model.mixin';
 import { User } from '../types';
-import { categorySchema } from './category.model';
-import { movieSchema } from './movie.model';
 
 const userSchema = new Schema<User>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    movies: { type: [movieSchema], default: [] },
-    categories: { type: [categorySchema], default: [] },
     token: { type: String },
   },
   { timestamps: true, versionKey: false }
@@ -37,7 +33,7 @@ class UserModel extends modelMixin<User>('User', userSchema) {
     return await bcrypt.compare(password, hashedPassword);
   }
 
-  async createUser(data: User) {
+  async createUser(data: Partial<User>) {
     const user = new this.Model(data);
     await user.save();
     return user;

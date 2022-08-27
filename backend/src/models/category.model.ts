@@ -25,10 +25,6 @@ class CategoryModel extends modelMixin<CategoryUserInput>(
     await category.save();
     return category;
   }
-
-  async getCategories() {
-    return await this.Model.find();
-  }
 }
 
 export default CategoryModel;

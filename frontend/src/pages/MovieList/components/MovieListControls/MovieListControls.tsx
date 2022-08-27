@@ -227,7 +227,7 @@ export const MovieListControls = (props: MovieListControlsProps) => {
               );
             })}
           {!error && !loading && categories.length === 0 && (
-            <h1>Nothing was found</h1>
+            <StyledMenuItem disabled>Nothing was found</StyledMenuItem>
           )}
           {error && !loading && <Error>{error}</Error>}
         </Select>

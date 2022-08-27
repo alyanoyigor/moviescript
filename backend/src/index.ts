@@ -6,7 +6,17 @@ import cors from 'cors';
 import path from 'path';
 import fileUpload from 'express-fileupload';
 
+import { Context } from './types';
 import router from './routes';
+import accessTokenMiddleware from './middlewares/accessToken.middleware';
+
+declare global {
+  namespace Express {
+    interface Request {
+      context?: Context;
+    }
+  }
+}
 
 const { PORT, MONGO_URI } = process.env;
 
@@ -21,7 +31,7 @@ app.use(
   })
 );
 
-app.use('/api', router);
+app.use('/api', accessTokenMiddleware, router);
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('*', (req, res) => {

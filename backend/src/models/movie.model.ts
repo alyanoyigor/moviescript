@@ -5,7 +5,7 @@ import modelMixin from '../mixins/model.mixin';
 import { Movie } from '../types';
 import { categorySchema } from './category.model';
 
-const movieSchema = new Schema<Movie>(
+export const movieSchema = new Schema<Movie>(
   {
     _id: { type: String, required: true },
     title: { type: String, required: true },

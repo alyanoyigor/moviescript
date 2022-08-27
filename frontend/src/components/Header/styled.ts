@@ -14,6 +14,7 @@ export const StyledNav = styled.nav`
   display: flex;
   gap: 16px;
   color: ${(props) => props.theme.palette.common.white};
+  flex: 1;
 `;
 
 export const StyledNavLink = styled(NavLink)`

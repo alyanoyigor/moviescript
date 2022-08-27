@@ -25,4 +25,17 @@ client.interceptors.response.use(
   }
 );
 
+client.interceptors.request.use(
+  (config) => {
+    if (config.headers === undefined) {
+      config.headers = {};
+    }
+    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default client;

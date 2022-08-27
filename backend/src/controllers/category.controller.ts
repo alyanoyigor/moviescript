@@ -14,16 +14,25 @@ class CategoryController extends BaseController {
   async createCategory(request: Request, response: Response) {
     try {
       const validCategory = CategoryUserInputSchema.parse(request.body);
-      const category = await this.categoryService.createCategory(validCategory);
-      return this.formatSuccessResponse(response, category);
+      if (request.context && request.context.user) {
+        const category = await this.categoryService.createCategory(
+          validCategory,
+          request.context.user
+        );
+        return this.formatSuccessResponse(response, category);
+      }
     } catch (error) {
       this.handleError(response, error);
     }
   }
   async getCategories(request: Request, response: Response) {
     try {
-      const categories = await this.categoryService.getCategories();
-      return this.formatSuccessResponse(response, categories);
+      if (request.context && request.context.user) {
+        const categories = await this.categoryService.getCategories(
+          request.context.user
+        );
+        return this.formatSuccessResponse(response, categories);
+      }
     } catch (error) {
       this.handleError(response, error);
     }

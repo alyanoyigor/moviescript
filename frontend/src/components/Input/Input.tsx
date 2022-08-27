@@ -1,11 +1,11 @@
 import React from 'react';
-import { TextField, ThemeProvider } from '@mui/material';
+import { TextField } from '@mui/material';
 import { Path, PathValue, RefCallBack } from 'react-hook-form';
-import { getTheme } from '../../styles/theme';
 
 const defaultProps = {
   error: '',
   type: 'text',
+  size: 'small',
   disabled: false,
   multiline: false,
 };
@@ -21,6 +21,7 @@ type InputProps<T> = {
   valueWatcher?: PathValue<T, Path<T>>;
   disabled?: boolean;
   min?: number;
+  size?: 'small' | 'medium';
   type?: string;
   error?: string;
   multiline?: boolean;
@@ -38,31 +39,30 @@ export const Input = <T,>(props: InputProps<T>) => {
     multiline,
     rows,
     min,
+    size,
   } = props;
 
   return (
-    <ThemeProvider theme={getTheme('light')}>
-      <TextField
-        color="secondary"
-        multiline={multiline}
-        rows={rows}
-        InputProps={{
-          inputProps: {
-            min,
-          },
-        }}
-        type={type}
-        label={label}
-        disabled={disabled}
-        autoComplete="off"
-        size="small"
-        error={Boolean(error)}
-        helperText={error}
-        variant="outlined"
-        InputLabelProps={{ shrink: Boolean(valueWatcher) }}
-        {...inputOptions}
-      />
-    </ThemeProvider>
+    <TextField
+      color="secondary"
+      multiline={multiline}
+      rows={rows}
+      InputProps={{
+        inputProps: {
+          min,
+        },
+      }}
+      type={type}
+      label={label}
+      disabled={disabled}
+      autoComplete="off"
+      size={size}
+      error={Boolean(error)}
+      helperText={error}
+      variant="outlined"
+      InputLabelProps={{ shrink: Boolean(valueWatcher) }}
+      {...inputOptions}
+    />
   );
 };
 

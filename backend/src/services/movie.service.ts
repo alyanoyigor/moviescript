@@ -1,9 +1,10 @@
 import fileUpload from 'express-fileupload';
 import fsPromises from 'fs/promises';
+import { Document } from 'mongoose';
 import { Service } from 'typedi';
 import { v4 as uuidv4 } from 'uuid';
 import MovieModel from '../models/movie.model';
-import { Movie, MoviesQuery, MovieUpdate } from '../types';
+import { Movie, MoviesQuery, MovieUpdate, User } from '../types';
 
 const { HOST } = process.env;
 
@@ -11,18 +12,20 @@ const { HOST } = process.env;
 class MovieService {
   constructor(private movieModel: MovieModel) {}
 
-  async createMovie(data: Movie) {
-    return await this.movieModel.createMovie(data);
+  async createMovie(data: Movie, user: Document<unknown, any, User> & User) {
+    const movie = await this.movieModel.createMovie(data);
+    user.movies = [...user.movies, movie];
+    await user.save();
+    return movie;
   }
 
-  async getAllNotDeletedMovies() {
-    return await this.movieModel.model.find({
+  async getMovieList(
+    query: MoviesQuery,
+    user: Document<unknown, any, User> & User
+  ) {
+    const allMovies = await user.get('movies').find({
       deleted: { $ne: true },
     });
-  }
-
-  async getMovieList(query: MoviesQuery) {
-    const allMovies = await this.getAllNotDeletedMovies();
 
     let limit;
     if (Number(query.limit) <= 8) {
@@ -31,7 +34,8 @@ class MovieService {
       limit = Number(query.limit) || 8;
     }
 
-    const moviesModel = this.movieModel.model
+    const moviesModel = await user
+      .get('movies')
       .find({ deleted: { $ne: true } })
       .limit(limit);
 

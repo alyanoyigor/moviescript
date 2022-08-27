@@ -51,3 +51,24 @@ export enum Position {
   fixed = 'fixed',
   sticky = 'sticky',
 }
+
+export type Login = {
+  email: string;
+  password: string;
+};
+
+export type Register = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type User = {
+  _id: string;
+  email: string;
+  name: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+  token: string;
+};

@@ -17,9 +17,15 @@ class MovieController extends BaseController {
 
   async getMovieList(request: Request, response: Response) {
     try {
-      const movieList = await this.movieService.getMovieList(request.query);
-      return this.formatSuccessResponse(response, movieList);
+      if (request.context && request.context.user) {
+        const movieList = await this.movieService.getMovieList(
+          request.query,
+          request.context.user
+        );
+        return this.formatSuccessResponse(response, movieList);
+      }
     } catch (error) {
+      console.log(error);
       this.handleError(response, error);
     }
   }
@@ -36,8 +42,13 @@ class MovieController extends BaseController {
   async createMovie(request: Request, response: Response) {
     try {
       const validMovie = MovieSchema.parse(request.body);
-      const movie = await this.movieService.createMovie(validMovie);
-      return this.formatSuccessResponse(response, movie);
+      if (request.context && request.context.user) {
+        const movie = await this.movieService.createMovie(
+          validMovie,
+          request.context.user
+        );
+        return this.formatSuccessResponse(response, movie);
+      }
     } catch (error) {
       this.handleError(response, error);
     }

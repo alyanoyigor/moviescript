@@ -5,14 +5,6 @@ const createErrorObject = (option: string, type: string) => ({
   invalid_type_error: `${option} must be a ${type}`,
 });
 
-const createOptionalObject = (object: any) => {
-  for (const param in object) {
-    object[param] = zod.optional(object[param]);
-  }
-
-  return object;
-};
-
 const categoryObject = {
   name: zod
     .string(createErrorObject('Name', 'string'))
@@ -20,9 +12,7 @@ const categoryObject = {
 };
 
 export const CategoryUserInputSchema = zod.object(categoryObject);
-export const CategoryOptionalSchema = zod.object(
-  createOptionalObject(categoryObject)
-);
+export const CategoryOptionalSchema = CategoryUserInputSchema.partial();
 
 export const CategoryDatabaseSchema = zod.object({
   ...categoryObject,
@@ -57,7 +47,27 @@ const movieObject = {
 };
 
 export const MovieSchema = zod.object(movieObject);
+export const MovieOptionalSchema = MovieSchema.partial();
 
-export const MovieOptionalSchema = zod.object(
-  createOptionalObject(movieObject)
-);
+const userObjectValidation = {
+  email: zod.string().email('Must be a valid email'),
+  password: zod
+    .string()
+    .regex(
+      new RegExp('.*[A-Z].*'),
+      'Should contains one uppercase character at least'
+    )
+    .regex(
+      new RegExp('.*[a-z].*'),
+      'Should contains one lowercase character at least'
+    )
+    .regex(new RegExp('.*\\d.*'), 'Should contains one number at least')
+    .min(8, 'Too short password')
+    .max(30, 'Too long password'),
+};
+
+export const UserLoginSchema = zod.object(userObjectValidation);
+export const UserRegisterSchema = zod.object({
+  ...userObjectValidation,
+  name: zod.string().max(30, 'Too long name'),
+});

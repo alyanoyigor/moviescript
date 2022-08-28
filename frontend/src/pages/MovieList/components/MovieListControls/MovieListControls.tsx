@@ -18,7 +18,8 @@ import {
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import {
-  AddToPhotos as AddToPhotosIcon,
+  Tune as FilterListIcon,
+  Sort as SortIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
   Compare as CompareIcon,
@@ -92,12 +93,13 @@ export const MovieListControls = (props: MovieListControlsProps) => {
   };
 
   const onClickSortButton = () => {
+    let query;
     if (queries.sort && sortActions[queries.sort]) {
-      const query = sortActions[queries.sort]();
-      return getMovieList(query);
+      query = sortActions[queries.sort]();
+    } else {
+      query = { name: 'sort', value: SortMoviesOptions.asc };
+      dispatch(movieListAddQuery({ query }));
     }
-    const query = { name: 'sort', value: SortMoviesOptions.asc };
-    dispatch(movieListAddQuery({ query }));
     getMovieList(query);
   };
 
@@ -177,7 +179,7 @@ export const MovieListControls = (props: MovieListControlsProps) => {
           variant="contained"
           sx={{ height: '100%' }}
           onClick={handleOpenMenuCategories}
-          startIcon={<AddToPhotosIcon />}
+          startIcon={<FilterListIcon />}
         >
           Categories
         </Button>
@@ -240,10 +242,11 @@ export const MovieListControls = (props: MovieListControlsProps) => {
         onClick={onClickSortButton}
         variant="contained"
         color="info"
-        sx={{ width: '90px' }}
         startIcon={
           (queries.sort === SortMoviesOptions.desc && <ArrowUpwardIcon />) ||
-          (queries.sort === SortMoviesOptions.asc && <ArrowDownwardIcon />)
+          (queries.sort === SortMoviesOptions.asc && <ArrowDownwardIcon />) || (
+            <SortIcon />
+          )
         }
       >
         Sort
@@ -262,7 +265,7 @@ export const MovieListControls = (props: MovieListControlsProps) => {
       <Tooltip
         title={
           compareMovies.length <= 1
-            ? 'Add movies to compare them'
+            ? 'Please add movies to compare them'
             : 'Compare view'
         }
       >
@@ -276,6 +279,7 @@ export const MovieListControls = (props: MovieListControlsProps) => {
         </span>
       </Tooltip>
       <MenuAdd
+        categoriesLength={categories.length}
         handleOpenModalCategoryCreate={handleOpenModalCategoryCreate}
         handleOpenModalMovieCreate={handleOpenModalMovieCreate}
         anchorEl={anchorElAddMenu}

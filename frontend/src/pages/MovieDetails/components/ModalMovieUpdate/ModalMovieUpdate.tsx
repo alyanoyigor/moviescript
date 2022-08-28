@@ -40,6 +40,7 @@ export const ModalMovieUpdate = (props: ModalMovieUpdateProps) => {
         categories={categories}
         defaultMovieProps={defaultMovieProps}
         fetchLoading={fetchLoading}
+        submitButtonText="Update"
         fetchCategoriesLoading={fetchCategoriesLoading}
         onSubmit={handleUpdateMovie}
         onCancel={handleClose}

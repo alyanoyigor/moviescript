@@ -33,6 +33,7 @@ export const ModalMovieCreate = (props: ModalMovieCreateProps) => {
       <MovieForm
         loading={loading}
         schema={movieCreateSchema}
+        submitButtonText="Create"
         categories={categories}
         fetchCategoriesLoading={fetchCategoriesLoading}
         onSubmit={handleCreateMovie}

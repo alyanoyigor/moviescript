@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextField } from '@mui/material';
+import React, { ChangeEvent } from 'react';
+import { OutlinedInputProps, TextField } from '@mui/material';
 import { RefCallBack } from 'react-hook-form';
 
 const defaultProps = {
@@ -13,13 +13,17 @@ const defaultProps = {
 type InputProps = {
   inputOptions: {
     name: string;
-    onChange: (value: any) => void;
-    onBlur: (value: any) => void;
+    onChange: (
+      event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+    onBlur: (
+      event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
     ref: RefCallBack;
   };
   label: string;
   disabled?: boolean;
-  min?: number;
+  inputProps?: Partial<OutlinedInputProps>;
   size?: 'small' | 'medium';
   type?: string;
   error?: string;
@@ -36,7 +40,7 @@ export const Input = (props: InputProps) => {
     disabled,
     multiline,
     rows,
-    min,
+    inputProps,
     size,
   } = props;
 
@@ -45,11 +49,7 @@ export const Input = (props: InputProps) => {
       color="secondary"
       multiline={multiline}
       rows={rows}
-      InputProps={{
-        inputProps: {
-          min,
-        },
-      }}
+      InputProps={inputProps}
       type={type}
       label={label}
       disabled={disabled}

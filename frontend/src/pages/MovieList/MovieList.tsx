@@ -179,7 +179,7 @@ export const MovieList = () => {
               justifyContent="center"
             >
               <Typography variant="h6" component="p">
-                Sorry we tried, but nothing was found
+                Sorry, we tried, but nothing was found
               </Typography>
               <StyledNothingFoundImage
                 src={NothingFoundMovies}

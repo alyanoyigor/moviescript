@@ -5,8 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 
 import { Input } from 'components/Input';
+import { InputPassword } from 'components/InputPassword';
 import { authLoadingSelector } from 'store/auth/selectors/auth';
-import { loginSchema } from 'validation/loginSchema';
+import { registerSchema } from 'validation/registerSchema';
 import { Register as RegisterData } from 'types';
 import { useAppDispatch } from 'store';
 import { authRegisterStart } from 'store/auth/thunks/authRegister';
@@ -18,7 +19,7 @@ export const Register = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<RegisterData>({ resolver: yupResolver(loginSchema) });
+  } = useForm<RegisterData>({ resolver: yupResolver(registerSchema) });
   const dispatch = useAppDispatch();
   const loading = useSelector(authLoadingSelector);
 
@@ -48,13 +49,18 @@ export const Register = () => {
           error={errors['email']?.message}
           label="Email"
         />
-        <Input
+        <InputPassword
           disabled={loading}
-          type="password"
           size="medium"
           inputOptions={register('password')}
           error={errors['password']?.message}
-          label="Password"
+        />
+        <InputPassword
+          disabled={loading}
+          size="medium"
+          inputOptions={register('confirmPassword')}
+          error={errors['confirmPassword']?.message}
+          label="Confirm password"
         />
         <Button
           disabled={loading}
@@ -63,7 +69,7 @@ export const Register = () => {
           variant="contained"
           color="secondary"
         >
-          Submit
+          Register
         </Button>
       </StyledForm>
     </StyledContainer>

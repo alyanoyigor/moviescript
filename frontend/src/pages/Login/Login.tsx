@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 
 import { Input } from 'components/Input';
+import { InputPassword } from 'components/InputPassword';
 import { authLoadingSelector } from 'store/auth/selectors/auth';
 import { loginSchema } from 'validation/loginSchema';
 import { Login as LoginData } from 'types';
@@ -41,13 +42,11 @@ export const Login = () => {
           error={errors['email']?.message}
           label="Email"
         />
-        <Input
+        <InputPassword
           disabled={loading}
           size="medium"
-          type="password"
           inputOptions={register('password')}
           error={errors['password']?.message}
-          label="Password"
         />
         <Button
           disabled={loading}
@@ -56,7 +55,7 @@ export const Login = () => {
           variant="contained"
           color="secondary"
         >
-          Submit
+          Login
         </Button>
       </StyledForm>
     </StyledContainer>

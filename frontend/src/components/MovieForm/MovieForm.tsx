@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Checkbox,
   InputLabel,
@@ -38,6 +38,7 @@ type MovieFormProps = {
   categories: MovieCategory[];
   schema: AnyObjectSchema;
   fetchCategoriesLoading: boolean;
+  submitButtonText: string;
   fetchLoading?: boolean;
   defaultMovieProps?: Movie | Record<string, never>;
 };
@@ -50,9 +51,12 @@ export const MovieForm = (props: MovieFormProps) => {
     defaultMovieProps,
     categories,
     onCancel,
+    submitButtonText,
     onSubmit,
     schema,
   } = props;
+
+  const [posterName, setPosterName] = useState<string | undefined>();
 
   const defaultValues = useMemo(
     () => ({
@@ -80,7 +84,13 @@ export const MovieForm = (props: MovieFormProps) => {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => reset(defaultValues), [defaultValues, reset]);
+  useEffect(() => {
+    const imagePath =
+      defaultMovieProps?.imagePath &&
+      defaultMovieProps.imagePath.split('/').pop();
+    reset(defaultValues);
+    setPosterName(imagePath);
+  }, [defaultValues, defaultMovieProps?.imagePath, reset]);
 
   return (
     <>
@@ -104,10 +114,9 @@ export const MovieForm = (props: MovieFormProps) => {
           <Input
             disabled={loading}
             type="number"
-            min={1}
             inputOptions={register('duration')}
             error={errors['duration']?.message}
-            label="Duration"
+            label="Duration (min)"
           />
           <Controller
             name="grade"
@@ -246,17 +255,24 @@ export const MovieForm = (props: MovieFormProps) => {
               component="label"
               startIcon={<ImageIcon />}
             >
-              Upload
+              Upload poster
               <input
                 hidden
                 accept="image/*"
                 type="file"
-                {...register('imagePath')}
+                {...register('imagePath', {
+                  onChange: (event) => {
+                    setPosterName(event.target.files[0].name);
+                  },
+                })}
               />
             </Button>
-            <FormHelperText sx={{ color: 'error.main' }}>
-              {errors['imagePath']?.message}
-            </FormHelperText>
+            {errors['imagePath'] && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors['imagePath'].message}
+              </FormHelperText>
+            )}
+            {posterName && <FormHelperText>{posterName}</FormHelperText>}
           </FormControl>
           <StyledButtonsContainer
             display="flex"
@@ -277,7 +293,7 @@ export const MovieForm = (props: MovieFormProps) => {
               variant="contained"
               type="submit"
             >
-              Submit
+              {submitButtonText}
             </StyledButton>
           </StyledButtonsContainer>
         </StyledForm>

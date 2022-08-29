@@ -35,6 +35,7 @@ export const ModalCategoryCreate = (props: ModalCategoryCreateProps) => {
         onCancel={handleClose}
         inputsInfo={inputs}
         hookFormData={hookFormData}
+        submitButtonText="Create"
       />
     </Modal>
   );

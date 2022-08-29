@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { Movie } from 'types';
+import { Movie, MovieQueries } from 'types';
 import { MovieListFetchState } from '../reducers/movieListFetch';
 
 export const movieListFetchInProgressAction = (state: MovieListFetchState) => {
@@ -37,4 +37,12 @@ export const movieListAddQueryAction = (
 ) => {
   const { query } = action.payload;
   state.queries = { ...state.queries, ...{ [query.name]: query.value } };
+};
+
+export const movieListSetQueriesAction = (
+  state: MovieListFetchState,
+  action: PayloadAction<{ queries: MovieQueries }>
+) => {
+  const { queries } = action.payload;
+  state.queries = queries;
 };

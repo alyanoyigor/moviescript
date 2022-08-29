@@ -64,8 +64,15 @@ export const MovieListControls = (props: MovieListControlsProps) => {
   } = useSelector(movieListGetCategoriesSelector);
   const dispatch = useAppDispatch();
 
+  const removeLimitQuery = () => {
+    const query = { name: 'limit', value: null };
+    setQueries(query);
+    dispatch(movieListAddQuery({ query }));
+  };
+
   const getMovieList = (query: { name: string; value: string | null }) => {
     setQueries(query);
+    removeLimitQuery();
     dispatch(movieListFetchStart());
   };
 

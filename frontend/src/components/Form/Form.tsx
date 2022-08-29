@@ -16,6 +16,7 @@ type FormProps<T> = {
   hookFormData: UseFormReturn<T>;
   onCancel: () => void;
   onSubmit: (data: T) => void;
+  submitButtonText: string;
   fetchLoading?: boolean;
 };
 
@@ -27,6 +28,7 @@ export const Form = <T,>(props: FormProps<T>) => {
     onSubmit,
     hookFormData,
     inputsInfo,
+    submitButtonText,
   } = props;
 
   const {
@@ -74,7 +76,7 @@ export const Form = <T,>(props: FormProps<T>) => {
               variant="contained"
               type="submit"
             >
-              Submit
+              {submitButtonText}
             </StyledButton>
           </StyledButtonsContainer>
         </StyledForm>

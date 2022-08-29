@@ -13,6 +13,7 @@ import { Preloader } from 'components/Preloader';
 import { Error } from 'components/Error';
 import { CenterContainer } from 'components/CenterContainer';
 import { setQueries } from 'utils/setQueries';
+import { getQueries } from 'utils/getQueries';
 
 import { movieListFetchSelector } from './selectors/movieListFetch';
 import { movieListCreateCategorySelector } from './selectors/movieListCreateCategory';
@@ -27,6 +28,7 @@ import {
 import {
   movieListAddQuery,
   movieListResetData,
+  movieListSetQueries,
 } from './reducers/movieListFetch';
 import {
   movieListCompareViewAddMovie,
@@ -129,6 +131,7 @@ export const MovieList = () => {
   };
 
   useEffect(() => {
+    dispatch(movieListSetQueries({ queries: getQueries() }));
     dispatch(movieListFetchStart());
 
     return () => {

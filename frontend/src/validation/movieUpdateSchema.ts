@@ -13,7 +13,11 @@ export const movieUpdateSchema = yup.object({
     .string()
     .max(1000, 'Description should be less than 1000 characters')
     .required(required),
-  categories: yup.array().of(yup.string()).required(required),
+  categories: yup
+    .array()
+    .of(yup.string())
+    .required(required)
+    .min(1, 'Must be at least one category'),
   releaseDate: yup.date().typeError('Invalid date').required(required),
   imagePath: yup
     .mixed()

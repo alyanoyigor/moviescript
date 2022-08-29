@@ -75,5 +75,4 @@ export const authLogoutErrorAction = (
   state.loading = false;
   state.error = error;
   state.token = null;
-  localStorage.clear();
 };

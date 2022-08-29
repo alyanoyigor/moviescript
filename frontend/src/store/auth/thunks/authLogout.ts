@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { logout } from 'api/auth';
 import { authActions } from '../reducer/auth';
+import { movieListCompareViewResetData } from 'pages/MovieList/reducers/movieListCompareView';
 
 const AUTH_LOGOUT_PREFIX = 'AUTH_LOGOUT';
 export const authLogoutStart = createAsyncThunk(
@@ -12,6 +13,8 @@ export const authLogoutStart = createAsyncThunk(
 
       await logout();
       dispatch(authActions.authLogoutSuccess());
+      localStorage.clear();
+      dispatch(movieListCompareViewResetData());
 
       toast.success('You logged out successfully!');
     } catch (error) {

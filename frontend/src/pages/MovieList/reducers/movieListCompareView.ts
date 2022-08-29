@@ -12,16 +12,18 @@ export type MovieListCompareViewState = {
   movies: Movie[];
 };
 
-const savedMovieIdList = localStorage.getItem('compareMovies');
-const compareMovieIds = savedMovieIdList
-  ? savedMovieIdList.split(',').map((movieId: string) => movieId)
-  : [];
+const getSavedMovieIdList = () => {
+  const savedMovieIdList = localStorage.getItem('compareMovies');
+  return savedMovieIdList
+    ? savedMovieIdList.split(',').map((movieId: string) => movieId)
+    : [];
+};
 
 const initialState: MovieListCompareViewState = {
   limit: 5,
   error: null,
   loading: true,
-  compareMovieIds,
+  compareMovieIds: getSavedMovieIdList(),
   movies: [],
 };
 
@@ -34,6 +36,10 @@ const movieListCompareViewSlice = createSlice({
     movieListCompareViewAddMovie: actions.movieListCompareViewAddMovieAction,
     movieListCompareViewRemoveMovie:
       actions.movieListCompareViewRemoveMovieAction,
+    movieListCompareViewResetData: () => ({
+      ...initialState,
+      compareMovieIds: getSavedMovieIdList(),
+    }),
   },
   extraReducers: (builder) => {
     builder
@@ -52,7 +58,10 @@ const movieListCompareViewSlice = createSlice({
   },
 });
 
-export const { movieListCompareViewAddMovie, movieListCompareViewRemoveMovie } =
-  movieListCompareViewSlice.actions;
+export const {
+  movieListCompareViewAddMovie,
+  movieListCompareViewRemoveMovie,
+  movieListCompareViewResetData,
+} = movieListCompareViewSlice.actions;
 
 export default movieListCompareViewSlice.reducer;

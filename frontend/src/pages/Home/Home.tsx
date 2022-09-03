@@ -19,11 +19,13 @@ export const Home = () => {
     <StyledHomeWrapper>
       <StyledHomeBody>
         <StyledTitle>Unlimited movies, TV shows, and more</StyledTitle>
-        <StyledLink to="/movies">
-          <Button variant="contained" size="large">
-            Find movie
-          </Button>
-        </StyledLink>
+        <div>
+          <StyledLink to="/movies">
+            <Button variant="contained" size="large">
+              Find movie
+            </Button>
+          </StyledLink>
+        </div>
       </StyledHomeBody>
       <Suspense
         fallback={
